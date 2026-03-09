@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/app_state.dart';
 import '../theme/app_colors.dart';
 import 'registration_screen.dart';
 import '../widgets/main_drawer.dart';
@@ -57,6 +60,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     cta: 'Become a Seller',
                     imagePath: 'assets/images/farmer-portrait-1.jpg',
                     onTap: () {
+                      context.read<AppState>().setRole(UserRole.seller);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen(role: 'Seller')));
                     },
                   ),
@@ -70,6 +74,7 @@ class RoleSelectionScreen extends StatelessWidget {
                     cta: 'Register as a Buyer',
                     imagePath: 'assets/images/farmer-portrait-2.jpg',
                     onTap: () {
+                      context.read<AppState>().setRole(UserRole.buyer);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen(role: 'Buyer')));
                     },
                   ),

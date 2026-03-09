@@ -4,6 +4,7 @@ import '../widgets/main_drawer.dart';
 import 'role_selection_screen.dart';
 import 'shop_produce_screen.dart';
 import 'how_it_works_screen.dart';
+import 'login_screen.dart';
 
 class LandingScreen extends StatelessWidget {
   const LandingScreen({super.key});
@@ -17,6 +18,13 @@ class LandingScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: AppColors.primaryBlue,
         elevation: 0,
+        actions: [
+          TextButton.icon(
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen())),
+            icon: const Icon(Icons.login),
+            label: const Text('Login'),
+          ),
+        ],
       ),
       drawer: const MainDrawer(),
       body: SingleChildScrollView(
