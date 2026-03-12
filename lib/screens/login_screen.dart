@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       // Get user role from response and set it
-      final userRole = result.user?['role'] as String?;
+      final userRole = result.user?['role']?.toString().toLowerCase();
       if (userRole != null) {
         if (userRole == 'seller' || userRole == 'farmer') {
           appState.setRole(UserRole.seller);
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           appState.setRole(UserRole.admin);
         } else if (userRole == 'driver') {
           appState.setRole(UserRole.driver);
-        } else if (userRole == 'ops' || userRole == 'agent') {
+        } else if (userRole == 'ops_agent' || userRole == 'ops' || userRole == 'agent') {
           appState.setRole(UserRole.opsAgent);
         } else if (userRole == 'finance') {
           appState.setRole(UserRole.finance);
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome back, ${result.user?['firstName'] ?? 'User'}!'),
+            content: Text('Welcome back, ${result.user?['first_name'] ?? 'User'}!'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );

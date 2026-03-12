@@ -78,7 +78,18 @@ class RoleSelectionScreen extends StatelessWidget {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen(role: 'Buyer')));
                     },
                   ),
-                  
+                  const SizedBox(height: 20),
+                  // Driver / Transporter Card
+                  _RoleCard(
+                    title: 'Transporters',
+                    subtitle: 'Receive delivery assignments and earn per trip.',
+                    cta: 'Register as Driver',
+                    imagePath: 'assets/images/farmer-portrait-1.jpg',
+                    onTap: () {
+                      context.read<AppState>().setRole(UserRole.driver);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen(role: 'Driver')));
+                    },
+                  ),
                   const Spacer(),
                   TextButton(
                     onPressed: () {

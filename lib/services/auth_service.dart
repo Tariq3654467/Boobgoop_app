@@ -1,99 +1,78 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
-  // Use 10.0.2.2 for Android Emulator, or localhost/your IP for iOS/Web/Physical Device
-  static const String baseUrl = 'http://10.0.2.2:3000/api';
-  
-  // Keys for SharedPreferences
-  static const String _tokenKey = 'auth_token';
-  static const String _refreshTokenKey = 'refresh_token';
-  static const String _userKey = 'user_data';
+  final SupabaseClient _supabase = Supabase.instance.client;
 
-  // Get auth token from storage
+  // Get auth token from session
   Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    return _supabase.auth.currentSession?.accessToken;
   }
 
-  // Get refresh token from storage
+  // Get refresh token from session
   Future<String?> getRefreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_refreshTokenKey);
+    return _supabase.auth.currentSession?.refreshToken;
   }
 
-  // Save tokens and user data
-  Future<void> _saveAuthData(String token, String refreshToken, Map<String, dynamic> user) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
-    await prefs.setString(_refreshTokenKey, refreshToken);
-    await prefs.setString(_userKey, json.encode(user));
-  }
-
-  // Clear auth data on logout
+  // Clear auth data is handled by Supabase
   Future<void> clearAuthData() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
-    await prefs.remove(_refreshTokenKey);
-    await prefs.remove(_userKey);
+    await _supabase.auth.signOut();
   }
 
-  // Get stored user data
+  // Get stored user data (from current session/user)
   Future<Map<String, dynamic>?> getStoredUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userStr = prefs.getString(_userKey);
-    if (userStr != null) {
-      return json.decode(userStr) as Map<String, dynamic>;
+    final user = _supabase.auth.currentUser;
+    if (user != null) {
+      // Fetch profile data from the profiles table
+      try {
+        final profile = await _supabase
+            .from('profiles')
+            .select()
+            .eq('id', user.id)
+            .single();
+        return profile;
+      } catch (e) {
+        // Fallback to user metadata if profile fetch fails
+        return {
+          'id': user.id,
+          'email': user.email,
+          ...user.userMetadata ?? {},
+        };
+      }
     }
     return null;
   }
 
   // Check if user is logged in
   Future<bool> isLoggedIn() async {
-    final token = await getToken();
-    return token != null && token.isNotEmpty;
+    return _supabase.auth.currentSession != null;
   }
 
   // Login user
   Future<AuthResult> login(String email, String password) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/login'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'email': email,
-          'password': password,
-        }),
+      final response = await _supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
       );
 
-      final data = json.decode(response.body);
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (data['success'] == true) {
-          final userData = data['data']['user'] as Map<String, dynamic>;
-          final token = data['data']['token'] as String;
-          final refreshToken = data['data']['refreshToken'] as String;
-
-          await _saveAuthData(token, refreshToken, userData);
-
-          return AuthResult(
-            success: true,
-            user: userData,
-            token: token,
-            message: data['message'] ?? 'Login successful',
-          );
-        }
+      if (response.user != null) {
+        final profile = await getStoredUser();
+        return AuthResult(
+          success: true,
+          user: profile,
+          token: response.session?.accessToken,
+          message: 'Login successful',
+        );
       }
 
       return AuthResult(
         success: false,
-        message: data['message'] ?? 'Login failed',
+        message: 'Login failed',
       );
     } catch (e) {
       return AuthResult(
         success: false,
-        message: 'Network error: ${e.toString()}',
+        message: e.toString(),
       );
     }
   }
@@ -108,143 +87,59 @@ class AuthService {
     required String role,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/register'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'email': email,
-          'password': password,
+      final response = await _supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {
+          'first_name': firstName,
+          'last_name': lastName,
           'phone': phone,
-          'firstName': firstName,
-          'lastName': lastName,
           'role': role,
-        }),
-      );
-
-      final data = json.decode(response.body);
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (data['success'] == true) {
-          final userData = data['data']['user'] as Map<String, dynamic>;
-          final token = data['data']['token'] as String;
-          final refreshToken = data['data']['refreshToken'] as String;
-
-          await _saveAuthData(token, refreshToken, userData);
-
-          return AuthResult(
-            success: true,
-            user: userData,
-            token: token,
-            message: data['message'] ?? 'Registration successful',
-          );
-        }
-      }
-
-      return AuthResult(
-        success: false,
-        message: data['message'] ?? 'Registration failed',
-      );
-    } catch (e) {
-      return AuthResult(
-        success: false,
-        message: 'Network error: ${e.toString()}',
-      );
-    }
-  }
-
-  // Get current user data from backend
-  Future<AuthResult> getCurrentUser() async {
-    try {
-      final token = await getToken();
-      if (token == null) {
-        return AuthResult(success: false, message: 'Not authenticated');
-      }
-
-      final response = await http.get(
-        Uri.parse('$baseUrl/auth/me'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
         },
       );
 
-      final data = json.decode(response.body);
+      if (response.user != null) {
+        // The trigger on the backend handles profile creation.
+        // We might need to wait a moment or just return the data we have.
+        final userData = {
+          'id': response.user!.id,
+          'email': email,
+          'first_name': firstName,
+          'last_name': lastName,
+          'role': role,
+          'phone': phone,
+        };
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (data['success'] == true) {
-          final userData = data['data'] as Map<String, dynamic>;
-          
-          // Update stored user data
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString(_userKey, json.encode(userData));
-
-          return AuthResult(
-            success: true,
-            user: userData,
-            token: token,
-          );
-        }
+        return AuthResult(
+          success: true,
+          user: userData,
+          token: response.session?.accessToken,
+          message: 'Registration successful. Please check your email for verification.',
+        );
       }
 
       return AuthResult(
         success: false,
-        message: data['message'] ?? 'Failed to get user',
+        message: 'Registration failed',
       );
     } catch (e) {
       return AuthResult(
         success: false,
-        message: 'Network error: ${e.toString()}',
+        message: e.toString(),
       );
     }
   }
 
   // Logout user
   Future<void> logout() async {
-    try {
-      final token = await getToken();
-      if (token != null) {
-        // Try to notify backend (but don't wait for response)
-        http.post(
-          Uri.parse('$baseUrl/auth/logout'),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $token',
-          },
-        );
-      }
-    } catch (_) {
-      // Ignore network errors during logout
-    } finally {
-      await clearAuthData();
-    }
+    await _supabase.auth.signOut();
   }
 
-  // Refresh token
+  // Refresh token is handled automatically by Supabase client
   Future<bool> refreshToken() async {
     try {
-      final refreshToken = await getRefreshToken();
-      if (refreshToken == null) {
-        return false;
-      }
-
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/refresh'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({'refreshToken': refreshToken}),
-      );
-
-      final data = json.decode(response.body);
-
-      if (response.statusCode >= 200 && response.statusCode < 300 && data['success'] == true) {
-        final newToken = data['data']['token'] as String;
-        
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(_tokenKey, newToken);
-        
-        return true;
-      }
-
-      return false;
+      final session = await _supabase.auth.refreshSession();
+      return session.session != null;
     } catch (_) {
       return false;
     }
@@ -265,4 +160,3 @@ class AuthResult {
     this.message = '',
   });
 }
-

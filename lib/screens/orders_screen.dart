@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 
@@ -23,7 +25,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   Future<void> _fetchOrders() async {
     try {
-      final orders = await _apiService.getOrders();
+      final token = context.read<AppState>().authToken;
+      final api = ApiService(authToken: token);
+      final orders = await api.getOrders();
       setState(() {
         _orders = orders;
         _isLoading = false;
@@ -58,7 +62,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
           children: [
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
-            Text('Error loading orders', style: Theme.of(context).textTheme.titleLarge),
+            Text(
+              'Error loading orders',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -107,9 +114,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: _getStatusColor(order['status']).withOpacity(0.1),
+                        color: _getStatusColor(
+                          order['status'],
+                        ).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -124,7 +136,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text('Total: \$${order['total'] ?? '0.00'}', style: const TextStyle(fontSize: 16)),
+                Text(
+                  'Total: \$${order['total'] ?? '0.00'}',
+                  style: const TextStyle(fontSize: 16),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   'Date: ${order['createdAt'] != null ? DateTime.parse(order['createdAt']).toString().split(' ')[0] : 'Unknown'}',

@@ -40,6 +40,8 @@ dependencies:
   intl: ^0.20.2
   flutter_svg: ^2.2.3
   shared_preferences: ^2.3.3
+  supabase_flutter: ^2.8.2
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:

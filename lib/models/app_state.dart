@@ -55,7 +55,42 @@ class AppState extends ChangeNotifier {
       _isLoggedIn = true;
       _currentUser = user;
       _authToken = token;
+      
+      // Set role from profile
+      final roleStr = user?['role']?.toString();
+      if (roleStr != null) {
+        _currentRole = _stringToRole(roleStr);
+      }
+      
       notifyListeners();
+    }
+  }
+
+  UserRole _stringToRole(String role) {
+    switch (role.toLowerCase()) {
+      case 'seller':
+      case 'farmer':
+        return UserRole.seller;
+      case 'buyer':
+        return UserRole.buyer;
+      case 'driver':
+      case 'transporter':
+        return UserRole.driver;
+      case 'ops_agent':
+      case 'ops':
+        return UserRole.opsAgent;
+      case 'admin':
+        return UserRole.admin;
+      case 'finance':
+        return UserRole.finance;
+      case 'hub':
+        return UserRole.hub;
+      case 'partner':
+        return UserRole.partner;
+      case 'expert':
+        return UserRole.expert;
+      default:
+        return UserRole.unknown;
     }
   }
 }

@@ -29,9 +29,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   // Get role for API
   String get _apiRole {
-    if (widget.role.toLowerCase() == 'seller' || widget.role.toLowerCase() == 'farmer') {
-      return 'seller';
-    }
+    final role = widget.role.toLowerCase();
+    if (role == 'seller' || role == 'farmer') return 'seller';
+    if (role == 'driver' || role == 'transporter') return 'driver';
     return 'buyer';
   }
 
@@ -80,12 +80,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         appState.setRole(UserRole.seller);
       } else if (_apiRole == 'buyer') {
         appState.setRole(UserRole.buyer);
+      } else if (_apiRole == 'driver') {
+        appState.setRole(UserRole.driver);
       }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome, ${result.user?['firstName'] ?? 'User'}!'),
+            content: Text('Welcome, ${result.user?['first_name'] ?? 'User'}!'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );

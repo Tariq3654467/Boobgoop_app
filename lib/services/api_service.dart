@@ -1,108 +1,164 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiService {
-  // Use 10.0.2.2 for Android Emulator, or localhost/your IP for iOS/Web/Physical Device
-  static const String baseUrl = 'http://10.0.2.2:3000/api'; 
-  
-  // Future placeholder for auth tokens
-  String? authToken;
+  final SupabaseClient _supabase = Supabase.instance.client;
 
-  Map<String, String> get _headers => {
-        'Content-Type': 'application/json',
-        if (authToken != null) 'Authorization': 'Bearer $authToken',
-      };
-
-  // Helper method for generic GET requests
-  Future<dynamic> getEndpoint(String endpoint) async {
-    try {
-      final response = await http.get(Uri.parse('$baseUrl$endpoint'), headers: _headers);
-      return _processResponse(response);
-    } catch (e) {
-      throw Exception('Network error: $e');
-    }
-  }
-
-  // Helper method for generic POST requests
-  Future<dynamic> postEndpoint(String endpoint, Map<String, dynamic> body) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl$endpoint'),
-        headers: _headers,
-        body: json.encode(body),
-      );
-      return _processResponse(response);
-    } catch (e) {
-      throw Exception('Network error: $e');
-    }
-  }
-
-  // Helper method for generic PUT requests
-  Future<dynamic> putEndpoint(String endpoint, Map<String, dynamic> body) async {
-    try {
-      final response = await http.put(
-        Uri.parse('$baseUrl$endpoint'),
-        headers: _headers,
-        body: json.encode(body),
-      );
-      return _processResponse(response);
-    } catch (e) {
-      throw Exception('Network error: $e');
-    }
-  }
-
-  dynamic _processResponse(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('API Error (${response.statusCode}): ${response.body}');
-    }
-  }
-
-  // Example Specific Calls 
-  
-  /// Fetches market prices from the backend
+  /// Fetches market prices from Supabase
   Future<List<dynamic>> getMarketPrices() async {
-    final response = await getEndpoint('/prices');
-    if (response['success'] == true) {
-      return response['data'] ?? [];
+    try {
+      final response = await _supabase.from('market_prices').select();
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching market prices: $e');
+      return [];
     }
-    return [];
   }
 
   /// Fetches community forum posts
   Future<List<dynamic>> getCommunityPosts() async {
-    final response = await getEndpoint('/community/posts');
-    if (response['success'] == true) {
-      return response['data']['posts'] ?? [];
+    try {
+      final response = await _supabase
+          .from('community_posts')
+          .select('*, profiles(first_name, last_name)')
+          .order('created_at', ascending: false);
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching community posts: $e');
+      return [];
     }
-    return [];
   }
 
-  /// Fetches analytics for Partner dashboard
+  /// Fetches analytics for Partner dashboard (Conceptual migration)
   Future<Map<String, dynamic>> getImpactReport() async {
-    final response = await getEndpoint('/reports/impact');
-    if (response['success'] == true) {
-      return response['data'] ?? {};
-    }
-    return {};
+    // This would likely be a complex query or a RPC call in Supabase
+    return {}; 
   }
 
-  /// Fetches orders from the backend
+  /// Fetches orders for the current user
   Future<List<dynamic>> getOrders() async {
-    final response = await getEndpoint('/orders');
-    if (response['success'] == true) {
-      return response['data'] ?? [];
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
+      final response = await _supabase
+          .from('orders')
+          .select('*, order_items(*)')
+          .or('buyer_id.eq.$userId,seller_id.eq.$userId')
+          .order('created_at', ascending: false);
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching orders: $e');
+      return [];
     }
-    return [];
   }
 
-  /// Fetches current weather
-  Future<Map<String, dynamic>> getWeather(double lat, double lng) async {
-    final response = await getEndpoint('/weather?lat=$lat&lon=$lng');
-    if (response['success'] == true) {
-      return response['data'] ?? {};
+  /// Creates a new product listing
+  Future<Map<String, dynamic>> createProduct(Map<String, dynamic> data) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) throw Exception('User not authenticated');
+
+      final productData = {
+        ...data,
+        'seller_id': userId,
+      };
+
+      final response = await _supabase.from('products').insert(productData).select().single();
+      return response;
+    } catch (e) {
+      throw Exception('Failed to create product: $e');
     }
-    return {};
+  }
+
+  /// Fetches current weather (Conceptual - Supabase doesn't replace external APIs directly, 
+  /// but we can store cached weather data)
+  Future<Map<String, dynamic>> getWeather(double lat, double lng) async {
+    try {
+      final response = await _supabase
+          .from('weather')
+          .select()
+          .limit(1)
+          .single();
+      return response;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  /// Fetches seller's own products
+  Future<List<dynamic>> getMyProducts({String? status}) async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
+      var query = _supabase.from('products').select().eq('seller_id', userId);
+      
+      if (status != null) {
+        query = query.eq('status', status);
+      }
+
+      final response = await query.order('created_at', ascending: false);
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching my products: $e');
+      return [];
+    }
+  }
+
+  /// Updates a product
+  Future<Map<String, dynamic>> updateProduct(String productId, Map<String, dynamic> data) async {
+    try {
+      final response = await _supabase
+          .from('products')
+          .update(data)
+          .eq('id', productId)
+          .select()
+          .single();
+      return response;
+    } catch (e) {
+      throw Exception('Failed to update product: $e');
+    }
+  }
+
+  /// Deletes a product
+  Future<void> deleteProduct(String productId) async {
+    try {
+      await _supabase.from('products').delete().eq('id', productId);
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
+  }
+
+  /// Fetches driver's deliveries
+  Future<List<dynamic>> getDriverDeliveries() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
+      final response = await _supabase
+          .from('logistics')
+          .select('*, orders(*)')
+          .eq('driver_id', userId)
+          .order('created_at', ascending: false);
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching driver deliveries: $e');
+      return [];
+    }
+  }
+
+  /// Updates delivery status
+  Future<Map<String, dynamic>> updateDeliveryStatus(String deliveryId, String status) async {
+    try {
+      final response = await _supabase
+          .from('logistics')
+          .update({'status': status})
+          .eq('id', deliveryId)
+          .select()
+          .single();
+      return response;
+    } catch (e) {
+      throw Exception('Failed to update delivery status: $e');
+    }
   }
 }
