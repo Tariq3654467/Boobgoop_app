@@ -626,6 +626,15 @@ class AppTranslations {
   String get capturePOD => languageCode == 'so' ? 'Qabo Caddaynta (POD)' : 'Capture POD';
   String get cameraPending => languageCode == 'so' ? 'Isku xidhka kamaradu weli ma diyaar garoobin' : 'Camera integration pending';
 
+  // Dashboards / Admin
+  String get adminDashboard => languageCode == 'so' ? 'Xafiiska Maamulka' : 'Admin Dashboard';
+  String get systemOverview => languageCode == 'so' ? 'Guud ahaan Nidaamka' : 'System Overview';
+  String get welcomeAdmin => languageCode == 'so' ? 'Ku soo dhawaada Xafiiska Maamulka ee BaadiGoob.\nCabbiraadaha guud halkan ayay ku soo bixi doonaan.' : 'Welcome to the BaadiGoob Admin Panel.\nOverview metrics will load here.';
+  String get partnerDashboard => languageCode == 'so' ? 'Xafiiska lammaanaha' : 'Partner Dashboard';
+  String get hubDashboard => languageCode == 'so' ? 'Xafiiska Hub-ka' : 'Hub Dashboard';
+  String get opsDashboard => languageCode == 'so' ? 'Xafiiska Hawlgallada' : 'Ops Dashboard';
+  String get financeDashboard => languageCode == 'so' ? 'Xafiiska Maaliyadda' : 'Finance Dashboard';
+
   // Filters
   String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
   String get filterLocation => languageCode == 'so' ? 'Goobta' : 'Location';
