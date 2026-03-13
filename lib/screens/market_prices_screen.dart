@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 
@@ -38,9 +39,10 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Market Prices'),
+        title: Text(translations.marketPricesTitle),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -54,13 +56,14 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
     }
 
     if (_error != null) {
+      final translations = AppLocalizations.of(context).translations;
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
-            Text('Error loading prices', style: Theme.of(context).textTheme.titleLarge),
+            Text(translations.errorLoading, style: Theme.of(context).textTheme.titleLarge),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -77,7 +80,7 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
                 });
                 _fetchPrices();
               },
-              child: const Text('Retry'),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -85,8 +88,9 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
     }
 
     if (_prices.isEmpty) {
-      return const Center(
-        child: Text('No market prices available.'),
+      final translations = AppLocalizations.of(context).translations;
+      return Center(
+        child: Text(translations.noData),
       );
     }
 
@@ -96,6 +100,7 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
       itemBuilder: (context, index) {
         final price = _prices[index];
         final isPositive = (price['priceChange'] ?? 0) >= 0;
+        final translations = AppLocalizations.of(context).translations;
 
         return Card(
           elevation: 2,
@@ -106,7 +111,7 @@ class _MarketPricesScreenState extends State<MarketPricesScreen> {
               child: Icon(Icons.shopping_basket, color: AppColors.primaryBlue),
             ),
             title: Text(
-              price['productName'] ?? 'Unknown Product',
+              price['productName'] ?? translations.unknownProduct,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text('${price['market']} - ${price['region']}'),

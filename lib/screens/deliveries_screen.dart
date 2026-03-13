@@ -54,7 +54,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
       final allDeliveries = await api.getEndpoint('/logistics');
 
       if (allDeliveries['success'] == true) {
-        final logistics = allDeliveries['data']['logistics'] ?? [];
+        final logistics = allDeliveries['data'] ?? [];
         
         setState(() {
           _pendingDeliveries = logistics.where((d) => d['status'] == 'assigned').toList();

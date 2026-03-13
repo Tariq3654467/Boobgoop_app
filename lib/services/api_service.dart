@@ -2,6 +2,67 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ApiService {
   final SupabaseClient _supabase = Supabase.instance.client;
+  final String? authToken;
+
+  ApiService({this.authToken});
+
+  /// Generic fetcher for Supabase tables
+  Future<Map<String, dynamic>> getEndpoint(String path) async {
+    try {
+      final tableName = path.startsWith('/') ? path.substring(1) : path;
+      final response = await _supabase.from(tableName).select();
+      
+      final List<dynamic> list = response as List<dynamic>;
+      return {
+        'success': true,
+        'data': list,
+      };
+    } catch (e) {
+      print('Error in getEndpoint ($path): $e');
+      return {
+        'success': false,
+        'error': e.toString(),
+      };
+    }
+  }
+
+  /// Generic update for Supabase tables
+  Future<Map<String, dynamic>> putEndpoint(String path, Map<String, dynamic> data) async {
+    try {
+      // Expecting path like /table/id or /table/id/status
+      final parts = path.split('/').where((p) => p.isNotEmpty).toList();
+      if (parts.isEmpty) throw Exception('Invalid path');
+      
+      final tableName = parts[0];
+      final id = parts.length > 1 ? parts[1] : null;
+
+      if (id == null) throw Exception('ID missing in path');
+
+      final response = await _supabase
+          .from(tableName)
+          .update(data)
+          .eq('id', id)
+          .select()
+          .single();
+      
+      return {'success': true, 'data': response};
+    } catch (e) {
+      print('Error in putEndpoint ($path): $e');
+      return {'success': false, 'error': e.toString()};
+    }
+  }
+
+  /// Generic insert for Supabase tables
+  Future<Map<String, dynamic>> postEndpoint(String path, Map<String, dynamic> data) async {
+    try {
+      final tableName = path.startsWith('/') ? path.substring(1) : path;
+      final response = await _supabase.from(tableName).insert(data).select().single();
+      return {'success': true, 'data': response};
+    } catch (e) {
+      print('Error in postEndpoint ($path): $e');
+      return {'success': false, 'error': e.toString()};
+    }
+  }
 
   /// Fetches market prices from Supabase
   Future<List<dynamic>> getMarketPrices() async {
@@ -121,7 +182,7 @@ class ApiService {
   }
 
   /// Deletes a product
-  Future<void> deleteProduct(String productId) async {
+  Future<void> deleteProduct(dynamic productId) async {
     try {
       await _supabase.from('products').delete().eq('id', productId);
     } catch (e) {

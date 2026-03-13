@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:baadigoob_agrolink/l10n/app_localizations.dart';
 import '../models/app_state.dart';
 import '../theme/app_colors.dart';
 import 'role_selection_screen.dart';
@@ -85,9 +84,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       }
 
       if (mounted) {
+        final translations = AppLocalizations.of(context).translations;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome, ${result.user?['first_name'] ?? 'User'}!'),
+            content: Text('${translations.welcomeUser}, ${result.user?['first_name'] ?? translations.user}!'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );
@@ -112,9 +112,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
+    String roleName = widget.role;
+    if (translations.languageCode == 'so') {
+      if (roleName.toLowerCase() == 'farmer' || roleName.toLowerCase() == 'seller') roleName = translations.roleSeller;
+      if (roleName.toLowerCase() == 'buyer') roleName = translations.roleBuyer;
+      if (roleName.toLowerCase() == 'driver' || roleName.toLowerCase() == 'transporter') roleName = translations.roleDriver;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.role} Registration'),
+        title: Text('$roleName ${translations.registerLink}'),
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.primaryBlue,
         elevation: 0,
@@ -136,7 +144,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 16),
                 
                 Text(
-                  'Create your account',
+                  translations.createAccount,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryBlue,
@@ -145,7 +153,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Join as a ${widget.role.toLowerCase()}',
+                  '${translations.joinAs} ${roleName.toLowerCase()}',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AppColors.textMedium,
                   ),
@@ -159,7 +167,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'First Name',
+                    labelText: translations.firstName,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -167,7 +175,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your first name';
+                      return '${translations.errorLoading} ${translations.firstName.toLowerCase()}';
                     }
                     return null;
                   },
@@ -180,7 +188,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textCapitalization: TextCapitalization.words,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Last Name',
+                    labelText: translations.lastName,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -188,7 +196,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your last name';
+                      return '${translations.errorLoading} ${translations.lastName.toLowerCase()}';
                     }
                     return null;
                   },
@@ -201,8 +209,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'your@email.com',
+                    labelText: translations.emailLabel,
+                    hintText: translations.emailHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -210,10 +218,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return translations.emailError;
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return translations.emailInvalid;
                     }
                     return null;
                   },
@@ -226,7 +234,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   keyboardType: TextInputType.phone,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Phone Number',
+                    labelText: translations.phoneNumber,
                     hintText: '+252...',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -235,7 +243,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your phone number';
+                      return '${translations.errorLoading} ${translations.phoneNumber.toLowerCase()}';
                     }
                     return null;
                   },
@@ -248,7 +256,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   obscureText: _obscurePassword,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: translations.passwordLabel,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -266,10 +274,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter a password';
+                      return translations.passwordError;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return translations.passwordTooShort;
                     }
                     return null;
                   },
@@ -283,7 +291,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => _register(),
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: translations.confirmPassword,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -301,10 +309,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
+                      return translations.passwordError;
                     }
                     if (value != _passwordController.text) {
-                      return 'Passwords do not match';
+                      return translations.passwordsDoNotMatch;
                     }
                     return null;
                   },
@@ -330,17 +338,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
+                          ),
                         )
-                      : const Text(
-                          'Create Account',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      : Text(
+                          translations.createAccountBtn,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                 ),
                 const SizedBox(height: 16),
 
                 // Terms
                 Text(
-                  'By creating an account, you agree to our Terms of Service and Privacy Policy.',
+                  translations.termsText,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textMedium,
                   ),
@@ -352,12 +361,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account? "),
+                    Text(translations.alreadyHaveAccount),
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Login'),
+                      child: Text(translations.loginTitle),
                     ),
                   ],
                 ),

@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
 
 class AddProduceScreen extends StatefulWidget {
   const AddProduceScreen({super.key});
@@ -46,8 +44,9 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
     final token = appState.authToken;
 
     if (token == null || token.isEmpty) {
+      final trans = AppLocalizations.of(context).translations;
       setState(() {
-        _error = 'Please log in as a seller to add products.';
+        _error = trans.sellerLoginError;
       });
       return;
     }
@@ -81,8 +80,8 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Product created successfully!'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).translations.productCreatedSuccess),
           backgroundColor: AppColors.secondaryGreen,
         ),
       );
@@ -103,9 +102,10 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Produce'),
+        title: Text(translations.addProduce),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -117,7 +117,7 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Create a new product listing so buyers can find your produce.',
+                translations.addProduceDesc,
                 style: Theme.of(
                   context,
                 ).textTheme.bodyLarge?.copyWith(color: AppColors.textMedium),
@@ -126,13 +126,13 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
               TextFormField(
                 controller: _nameController,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'Product Name',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: translations.productName,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a product name';
+                    return translations.enterName;
                   }
                   return null;
                 },
@@ -142,9 +142,9 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                 controller: _descriptionController,
                 textInputAction: TextInputAction.next,
                 maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Description (optional)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: translations.descriptionOptional,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16),
@@ -153,21 +153,21 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _priceController,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Price per unit',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.pricePerUnit,
+                        border: const OutlineInputBorder(),
                         prefixText: 'SOS ',
                       ),
-                      validator: (value) {
+                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Enter price';
+                          return translations.enterPrice;
                         }
                         if (double.tryParse(value.trim()) == null) {
-                          return 'Enter a valid number';
+                          return translations.enterValidNumber;
                         }
                         return null;
                       },
@@ -178,9 +178,9 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                     child: TextFormField(
                       controller: _unitController,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Unit',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.unit,
+                        border: const OutlineInputBorder(),
                         hintText: 'kg',
                       ),
                     ),
@@ -193,20 +193,20 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _quantityController,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Available qty',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.availableQty,
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (value) {
+                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Enter quantity';
+                          return translations.enterQuantity;
                         }
                         if (double.tryParse(value.trim()) == null) {
-                          return 'Enter a valid number';
+                          return translations.enterValidNumber;
                         }
                         return null;
                       },
@@ -216,19 +216,19 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _minOrderController,
-                      keyboardType: TextInputType.numberWithOptions(
+                      keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
                       ),
-                      decoration: const InputDecoration(
-                        labelText: 'Min order',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.minOrder,
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (value) {
+                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return 'Enter min order qty';
+                          return translations.enterMinOrder;
                         }
                         if (double.tryParse(value.trim()) == null) {
-                          return 'Enter a valid number';
+                          return translations.enterValidNumber;
                         }
                         return null;
                       },
@@ -243,11 +243,12 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                     child: TextFormField(
                       controller: _gradeController,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Grade (A/B/C)',
-                        border: OutlineInputBorder(),
-                        hintText: 'A',
-                      ),
+                decoration: InputDecoration(
+                  labelText: translations.gradePlaceholder,
+                  border: const OutlineInputBorder(),
+                  hintText: 'A',
+                ),
+      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -255,11 +256,12 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                     child: TextFormField(
                       controller: _regionController,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Region',
-                        border: OutlineInputBorder(),
-                        hintText: 'e.g., Banaadir',
-                      ),
+                decoration: InputDecoration(
+                  labelText: translations.region,
+                  border: const OutlineInputBorder(),
+                  hintText: translations.regionHint,
+                ),
+      ),
                     ),
                   ),
                 ],
@@ -290,9 +292,9 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                           ),
                         ),
                       )
-                    : const Text(
-                        'Create Listing',
-                        style: TextStyle(
+                    : Text(
+                        translations.createListing,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),

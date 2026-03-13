@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:baadigoob_agrolink/l10n/app_localizations.dart';
 import '../models/app_state.dart';
 import '../theme/app_colors.dart';
 import 'role_selection_screen.dart';
@@ -77,9 +76,10 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       if (mounted) {
+        final translations = AppLocalizations.of(context).translations;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome back, ${result.user?['first_name'] ?? 'User'}!'),
+            content: Text('${translations.welcomeBackUser}, ${result.user?['first_name'] ?? translations.user}!'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );
@@ -104,9 +104,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: Text(translations.loginTitle),
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.primaryBlue,
         elevation: 0,
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
                 
                 Text(
-                  'Welcome Back',
+                  translations.welcomeBack,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryBlue,
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Sign in to continue',
+                  translations.signInToContinue,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: AppColors.textMedium,
                   ),
@@ -153,8 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    labelText: 'Email',
-                    hintText: 'your@email.com',
+                    labelText: translations.emailLabel,
+                    hintText: translations.emailHint,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -162,10 +163,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
+                      return translations.emailError;
                     }
                     if (!value.contains('@')) {
-                      return 'Please enter a valid email';
+                      return translations.emailInvalid;
                     }
                     return null;
                   },
@@ -179,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => _login(),
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: translations.passwordLabel,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -197,10 +198,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
+                      return translations.passwordError;
                     }
                     if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
+                      return translations.passwordTooShort;
                     }
                     return null;
                   },
@@ -214,12 +215,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       // TODO: Implement forgot password
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Forgot password feature coming soon'),
+                        SnackBar(
+                          content: Text(translations.forgotPasswordSoon),
                         ),
                       );
                     },
-                    child: const Text('Forgot Password?'),
+                    child: Text(translations.forgotPassword),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -244,9 +245,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      : Text(
+                          translations.loginTitle,
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                 ),
                 const SizedBox(height: 24),
@@ -255,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account? "),
+                    Text(translations.dontHaveAccount),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -265,7 +266,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
-                      child: const Text('Register'),
+                      child: Text(translations.registerLink),
                     ),
                   ],
                 ),

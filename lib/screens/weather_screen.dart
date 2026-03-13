@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 
@@ -39,9 +40,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weather Forecast'),
+        title: Text(translations.weatherForecast),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -53,13 +55,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
     if (_isLoading) return const Center(child: CircularProgressIndicator());
 
     if (_error != null) {
+      final translations = AppLocalizations.of(context).translations;
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.cloud_off, color: Colors.grey, size: 64),
             const SizedBox(height: 16),
-            const Text('Could not fetch weather data.'),
+            Text(translations.errorLoading),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -76,7 +79,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 });
                 _fetchWeather();
               },
-              child: const Text('Retry'),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -85,7 +88,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
     final current = _weather?['current'] ?? {};
     final temp = current['temp'] ?? '--';
-    final desc = current['condition'] ?? 'Unknown';
+    final translations = AppLocalizations.of(context).translations;
+    final desc = current['condition'] ?? translations.unknownWeather;
 
     return Center(
       child: Column(
@@ -103,7 +107,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           ),
           const SizedBox(height: 40),
           if (_weather?['forecast'] != null) ...[
-            const Text('Upcoming Forecast', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Text(translations.upcomingForecast, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             const SizedBox(height: 12),
             SizedBox(
               height: 140,
@@ -118,7 +122,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Tomorrow'),
+                          Text(translations.tomorrow),
                           const SizedBox(height: 8),
                           Icon(Icons.cloud, color: Colors.blueGrey),
                           const SizedBox(height: 8),

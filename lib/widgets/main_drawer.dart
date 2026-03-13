@@ -5,6 +5,7 @@ import '../screens/landing_screen.dart';
 import '../screens/placeholder_screen.dart';
 import '../theme/app_colors.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/app_translations.dart';
 import '../screens/about_screen.dart';
 import '../screens/faq_screen.dart';
 import '../screens/how_it_works_screen.dart';
@@ -42,150 +43,193 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
     return Consumer<AppLocalizations>(
       builder: (context, localizations, child) {
         final isSomali = localizations.isSomali;
-        final role = context.watch<AppState>().currentRole;
+        final appTranslations = localizations.translations;
+        final role = appState.currentRole;
+        final isLoggedIn = appState.isLoggedIn;
+        final currentUser = appState.currentUser;
 
-        final roleLabel = _roleLabel(role, isSomali);
-        final menuItems = _menuItemsForRole(role, context, isSomali);
+        final roleLabel = _roleLabel(role, appTranslations);
+        final menuItems = _menuItemsForRole(role, context, appTranslations);
 
         return Drawer(
-          child: Column(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: AppColors.primaryBlue),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/logo/logo.png', width: 200),
-                    const SizedBox(height: 12),
-                    Text(
-                      roleLabel,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ...menuItems.map(
-                (item) => _DrawerTile(
-                  icon: item.icon,
-                  title: item.title,
-                  onTap: item.onTap,
-                ),
-              ),
-              const Spacer(),
-              _DrawerTile(
-                icon: Icons.swap_horiz,
-                title: isSomali ? 'Dooro Doorka' : 'Switch Role',
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const RoleSelectionScreen(),
-                    ),
-                  );
-                },
-              ),
-              // Language Toggle
-              Container(
-                margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.offWhite,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: AppColors.primaryBlue.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.language,
-                      color: AppColors.primaryBlue,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      isSomali ? 'Afka' : 'Language',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryBlue,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: () => localizations.toggleLanguage(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBlue,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(color: AppColors.primaryBlue),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/logo/logo.png', width: 200),
+                      const SizedBox(height: 12),
+                      if (isLoggedIn && currentUser != null) ...[
+                        Text(
+                          '${currentUser['first_name'] ?? ''} ${currentUser['last_name'] ?? ''}'.trim(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        minimumSize: Size.zero,
-                      ),
-                      child: Text(
-                        localizations.isEnglish ? 'SO' : 'EN',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        Text(
+                          currentUser['email'] ?? '',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      Text(
+                        roleLabel.toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.2,
                           fontSize: 12,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                ...menuItems.map(
+                  (item) => _DrawerTile(
+                    icon: item.icon,
+                    title: item.title,
+                    onTap: item.onTap,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _DrawerTile(
+                  icon: Icons.swap_horiz,
+                  title: appTranslations.switchRole,
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const RoleSelectionScreen(),
+                      ),
+                    );
+                  },
+                ),
+                // Language Toggle
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.offWhite,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.primaryBlue.withOpacity(0.3),
                     ),
-                  ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.language,
+                        color: AppColors.primaryBlue,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        appTranslations.language,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryBlue,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: () => localizations.toggleLanguage(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryBlue,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          minimumSize: Size.zero,
+                        ),
+                        child: Text(
+                          localizations.isEnglish ? 'SO' : 'EN',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'v1.0.0 - BaadiGoob AgroLink',
-                  style: TextStyle(color: AppColors.textLight, fontSize: 12),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'v1.0.0 - BaadiGoob AgroLink',
+                    style: TextStyle(color: AppColors.textLight, fontSize: 12),
+                  ),
                 ),
-              ),
-            ],
+                if (isLoggedIn)
+                  _DrawerTile(
+                    icon: Icons.logout,
+                    title: appTranslations.logout,
+                    onTap: () async {
+                      await appState.logout();
+                      if (context.mounted) {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const LandingScreen(),
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    },
+                  ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  String _roleLabel(UserRole role, bool isSomali) {
+  String _roleLabel(UserRole role, AppTranslations translations) {
     switch (role) {
       case UserRole.buyer:
-        return isSomali ? 'Iibiyaha' : 'Buyer';
+        return translations.roleBuyer;
       case UserRole.seller:
-        return isSomali ? 'Iibiyaha' : 'Seller';
+        return translations.roleSeller;
       case UserRole.opsAgent:
-        return isSomali ? 'Wakiilka' : 'Ops / Agent';
+        return translations.roleOps;
       case UserRole.driver:
-        return isSomali ? 'Darawal' : 'Driver';
+        return translations.roleDriver;
       case UserRole.admin:
-        return isSomali ? 'Maamulaha' : 'Admin';
+        return translations.roleAdmin;
       case UserRole.finance:
-        return isSomali ? 'Maaliyadda' : 'Finance';
+        return translations.roleFinance;
       case UserRole.hub:
-        return isSomali ? 'Xarunta' : 'Hub Staff';
+        return translations.roleHub;
       case UserRole.partner:
-        return isSomali ? 'Shuraakada' : 'Partner';
+        return translations.rolePartner;
       case UserRole.expert:
-        return isSomali ? 'Khabiir' : 'Expert';
+        return translations.roleExpert;
       case UserRole.unknown:
       default:
-        return isSomali ? 'Dooro Doorka' : 'Choose a Role';
+        return translations.roleChoose;
     }
   }
 
   List<_DrawerMenuItem> _menuItemsForRole(
     UserRole role,
     BuildContext context,
-    bool isSomali,
+    AppTranslations translations,
   ) {
     final navigator = (String title) => () {
       Navigator.of(
@@ -196,14 +240,14 @@ class MainDrawer extends StatelessWidget {
     switch (role) {
       case UserRole.buyer:
         return [
-          _DrawerMenuItem(Icons.home, isSomali ? 'Guriga' : 'Home', () {
+          _DrawerMenuItem(Icons.home, translations.home, () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const LandingScreen()),
             );
           }),
           _DrawerMenuItem(
             Icons.show_chart,
-            isSomali ? 'Qiimayaasha Suuqa' : 'Market Prices',
+            translations.marketPricesTitle,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MarketPricesScreen()),
@@ -212,7 +256,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.shopping_basket,
-            isSomali ? 'Suuqa' : 'Marketplace',
+            translations.marketplace,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const ShopProduceScreen()),
@@ -221,33 +265,33 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.receipt_long,
-            isSomali ? 'Amarada' : 'Orders',
+            translations.orders,
             () {
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (_) => const OrdersScreen()));
             },
           ),
-          _DrawerMenuItem(Icons.cloud, isSomali ? 'Cimilada' : 'Weather', () {
+          _DrawerMenuItem(Icons.cloud, translations.weatherTitle, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const WeatherScreen()));
           }),
-          _DrawerMenuItem(Icons.forum, isSomali ? 'Bulshada' : 'Community', () {
+          _DrawerMenuItem(Icons.forum, translations.communityTitle, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const CommunityScreen()));
           }),
           _DrawerMenuItem(
             Icons.support_agent,
-            isSomali ? 'Taageero' : 'Support',
+            translations.support,
             () {
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (_) => const ContactScreen()));
             },
           ),
-          _DrawerMenuItem(Icons.person, isSomali ? 'Profile' : 'Profile', () {
+          _DrawerMenuItem(Icons.person, translations.profile, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
@@ -255,14 +299,14 @@ class MainDrawer extends StatelessWidget {
         ];
       case UserRole.seller:
         return [
-          _DrawerMenuItem(Icons.home, isSomali ? 'Guriga' : 'Home', () {
+          _DrawerMenuItem(Icons.home, translations.home, () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const LandingScreen()),
             );
           }),
           _DrawerMenuItem(
             Icons.add_box,
-            isSomali ? 'Ku dar Wax-soo-saarka' : 'Add Produce',
+            translations.addProduce,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const AddProduceScreen()),
@@ -271,7 +315,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.list_alt,
-            isSomali ? 'Liiska Iibka' : 'My Listings',
+            translations.myListings,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MyListingsScreen()),
@@ -280,7 +324,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.receipt_long,
-            isSomali ? 'Amarada' : 'Orders',
+            translations.orders,
             () {
               Navigator.of(
                 context,
@@ -289,33 +333,33 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.show_chart,
-            isSomali ? 'Qiimayaasha Suuqa' : 'Market Prices',
+            translations.marketPricesTitle,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MarketPricesScreen()),
               );
             },
           ),
-          _DrawerMenuItem(Icons.cloud, isSomali ? 'Cimilada' : 'Weather', () {
+          _DrawerMenuItem(Icons.cloud, translations.weatherTitle, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const WeatherScreen()));
           }),
-          _DrawerMenuItem(Icons.forum, isSomali ? 'Bulshada' : 'Community', () {
+          _DrawerMenuItem(Icons.forum, translations.communityTitle, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const CommunityScreen()));
           }),
           _DrawerMenuItem(
             Icons.support_agent,
-            isSomali ? 'Taageero' : 'Support',
+            translations.support,
             () {
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (_) => const ContactScreen()));
             },
           ),
-          _DrawerMenuItem(Icons.person, isSomali ? 'Profile' : 'Profile', () {
+          _DrawerMenuItem(Icons.person, translations.profile, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
@@ -325,7 +369,7 @@ class MainDrawer extends StatelessWidget {
         return [
           _DrawerMenuItem(
             Icons.dashboard,
-            isSomali ? 'Dashboard' : 'Dashboard',
+            translations.dashboard,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const OpsDashboardScreen()),
@@ -334,7 +378,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.receipt_long,
-            isSomali ? 'Amarada' : 'Orders',
+            translations.orders,
             () {
               Navigator.of(
                 context,
@@ -343,12 +387,12 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.group,
-            isSomali ? 'Beeralayda' : 'Farmers',
-            navigator(isSomali ? 'Beeralayda' : 'Farmers'),
+            translations.farmers,
+            navigator(translations.farmers),
           ),
           _DrawerMenuItem(
             Icons.show_chart,
-            isSomali ? 'Qiimayaasha' : 'Prices',
+            translations.marketPricesTitle,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MarketPricesScreen()),
@@ -357,7 +401,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.local_shipping,
-            isSomali ? 'Saadka' : 'Logistics',
+            translations.logistics,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const LogisticsScreen()),
@@ -366,35 +410,35 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.report_problem,
-            isSomali ? 'Arrimaha' : 'Issues',
-            navigator(isSomali ? 'Arrimaha' : 'Issues'),
+            translations.issues,
+            navigator(translations.issues),
           ),
           _DrawerMenuItem(
             Icons.bar_chart,
-            isSomali ? 'Warbixinno' : 'Reports',
-            navigator(isSomali ? 'Warbixinno' : 'Reports'),
+            translations.reports,
+            navigator(translations.reports),
           ),
         ];
       case UserRole.driver:
         return [
-          _DrawerMenuItem(Icons.home, isSomali ? 'Guriga' : 'Home', () {
+          _DrawerMenuItem(Icons.home, translations.home, () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const LandingScreen()),
             );
           }),
           _DrawerMenuItem(
             Icons.map,
-            isSomali ? 'Safarrada' : 'My Trips',
-            navigator(isSomali ? 'Safarrada' : 'My Trips'),
+            translations.myTrips,
+            navigator(translations.myTrips),
           ),
           _DrawerMenuItem(
             Icons.download,
-            isSomali ? 'Qaado' : 'Pickups',
-            navigator(isSomali ? 'Qaado' : 'Pickups'),
+            translations.pickups,
+            navigator(translations.pickups),
           ),
           _DrawerMenuItem(
             Icons.delivery_dining,
-            isSomali ? 'Gawaarida' : 'Deliveries',
+            translations.deliveries,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const DeliveriesScreen()),
@@ -403,7 +447,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.receipt,
-            isSomali ? 'Caddaynta Gaarsiinta' : 'Proof of Delivery',
+            translations.pod,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -414,19 +458,19 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.account_balance_wallet,
-            isSomali ? 'Dakhliga' : 'Earnings',
-            navigator(isSomali ? 'Dakhliga' : 'Earnings'),
+            translations.earnings,
+            navigator(translations.earnings),
           ),
           _DrawerMenuItem(
             Icons.support_agent,
-            isSomali ? 'Taageero' : 'Support',
+            translations.support,
             () {
               Navigator.of(
                 context,
               ).push(MaterialPageRoute(builder: (_) => const ContactScreen()));
             },
           ),
-          _DrawerMenuItem(Icons.person, isSomali ? 'Profile' : 'Profile', () {
+          _DrawerMenuItem(Icons.person, translations.profile, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
@@ -436,7 +480,7 @@ class MainDrawer extends StatelessWidget {
         return [
           _DrawerMenuItem(
             Icons.dashboard,
-            isSomali ? 'Dashboard' : 'Dashboard',
+            translations.dashboard,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const AdminDashboardScreen()),
@@ -445,7 +489,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.admin_panel_settings,
-            isSomali ? 'Isticmaalayaasha & Doorka' : 'Users & Roles',
+            translations.usersRoles,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const UsersRolesScreen()),
@@ -454,7 +498,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.shopping_basket,
-            isSomali ? 'Suuqa' : 'Marketplace',
+            translations.marketplace,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const ShopProduceScreen()),
@@ -463,7 +507,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.show_chart,
-            isSomali ? 'Qiimayaasha' : 'Prices',
+            translations.marketPricesTitle,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const MarketPricesScreen()),
@@ -472,7 +516,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.forum,
-            isSomali ? 'Mawduuca/Bulshada' : 'Content/Community',
+            translations.contentCommunity,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const CommunityScreen()),
@@ -481,7 +525,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.receipt_long,
-            isSomali ? 'Amarada' : 'Orders',
+            translations.orders,
             () {
               Navigator.of(
                 context,
@@ -490,7 +534,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.local_shipping,
-            isSomali ? 'Saadka' : 'Logistics',
+            translations.logistics,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const LogisticsScreen()),
@@ -499,12 +543,12 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.payment,
-            isSomali ? 'Lacag-bixinta' : 'Payments',
-            navigator(isSomali ? 'Lacag-bixinta' : 'Payments'),
+            translations.payments,
+            navigator(translations.payments),
           ),
           _DrawerMenuItem(
             Icons.report_problem,
-            isSomali ? 'Khilaafaadka' : 'Disputes',
+            translations.disputes,
             () {
               Navigator.of(
                 context,
@@ -513,20 +557,20 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.bar_chart,
-            isSomali ? 'Warbixinno' : 'Reports',
-            navigator(isSomali ? 'Warbixinno' : 'Reports'),
+            translations.reports,
+            navigator(translations.reports),
           ),
           _DrawerMenuItem(
             Icons.settings,
-            isSomali ? 'Dejinta' : 'Settings',
-            navigator(isSomali ? 'Dejinta' : 'Settings'),
+            translations.settings,
+            navigator(translations.settings),
           ),
         ];
       case UserRole.finance:
         return [
           _DrawerMenuItem(
             Icons.dashboard,
-            isSomali ? 'Dashboard' : 'Dashboard',
+            translations.dashboard,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -535,42 +579,42 @@ class MainDrawer extends StatelessWidget {
               );
             },
           ),
-          _DrawerMenuItem(Icons.receipt, isSomali ? 'Bixinta' : 'Invoices', () {
+          _DrawerMenuItem(Icons.receipt, translations.invoices, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const InvoicesScreen()));
           }),
           _DrawerMenuItem(
             Icons.account_balance,
-            isSomali ? 'Bixinta Iibsadaha' : 'Buyer Payments',
-            navigator(isSomali ? 'Bixinta Iibsadaha' : 'Buyer Payments'),
+            translations.buyerPayments,
+            navigator(translations.buyerPayments),
           ),
           _DrawerMenuItem(
             Icons.account_balance_wallet,
-            isSomali ? 'Lacag Bixinta Iibiyaha' : 'Seller Payouts',
-            navigator(isSomali ? 'Lacag Bixinta Iibiyaha' : 'Seller Payouts'),
+            translations.sellerPayouts,
+            navigator(translations.sellerPayouts),
           ),
           _DrawerMenuItem(
             Icons.monetization_on,
-            isSomali ? 'Kharashka/Ganacsiga' : 'Fees/Commission',
-            navigator(isSomali ? 'Kharashka/Ganacsiga' : 'Fees/Commission'),
+            translations.feesCommission,
+            navigator(translations.feesCommission),
           ),
           _DrawerMenuItem(
             Icons.refresh,
-            isSomali ? 'Lacag Celin' : 'Refunds',
-            navigator(isSomali ? 'Lacag Celin' : 'Refunds'),
+            translations.refunds,
+            navigator(translations.refunds),
           ),
           _DrawerMenuItem(
             Icons.bar_chart,
-            isSomali ? 'Warbixinno' : 'Reports',
-            navigator(isSomali ? 'Warbixinno' : 'Reports'),
+            translations.reports,
+            navigator(translations.reports),
           ),
         ];
       case UserRole.hub:
         return [
           _DrawerMenuItem(
             Icons.dashboard,
-            isSomali ? 'Dashboard' : 'Dashboard',
+            translations.dashboard,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const HubDashboardScreen()),
@@ -579,12 +623,12 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.download,
-            isSomali ? 'Qaado' : 'Incoming Pickups',
-            navigator(isSomali ? 'Qaado' : 'Incoming Pickups'),
+            translations.incomingPickups,
+            navigator(translations.incomingPickups),
           ),
           _DrawerMenuItem(
             Icons.inventory,
-            isSomali ? 'Kala-Saarista/Qaadista' : 'Sorting/Packaging',
+            translations.sortingPackaging,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -595,30 +639,30 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.storage,
-            isSomali ? 'Kaydka/Boostada' : 'Stock/Loads',
-            navigator(isSomali ? 'Kaydka/Boostada' : 'Stock/Loads'),
+            translations.stockLoads,
+            navigator(translations.stockLoads),
           ),
-          _DrawerMenuItem(Icons.send, isSomali ? 'Dirida' : 'Dispatch', () {
+          _DrawerMenuItem(Icons.send, translations.dispatch, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const DispatchScreen()));
           }),
           _DrawerMenuItem(
             Icons.report_problem,
-            isSomali ? 'Arrimaha' : 'Issues',
-            navigator(isSomali ? 'Arrimaha' : 'Issues'),
+            translations.issues,
+            navigator(translations.issues),
           ),
           _DrawerMenuItem(
             Icons.bar_chart,
-            isSomali ? 'Warbixinno' : 'Reports',
-            navigator(isSomali ? 'Warbixinno' : 'Reports'),
+            translations.reports,
+            navigator(translations.reports),
           ),
         ];
       case UserRole.partner:
         return [
           _DrawerMenuItem(
             Icons.dashboard,
-            isSomali ? 'Dashboard' : 'Dashboard',
+            translations.dashboard,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -629,68 +673,68 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.emoji_events,
-            isSomali ? 'Saameynta' : 'Impact',
-            navigator(isSomali ? 'Saameynta' : 'Impact'),
+            translations.impact,
+            navigator(translations.impact),
           ),
           _DrawerMenuItem(
             Icons.map,
-            isSomali ? 'Gobollada' : 'Regions',
-            navigator(isSomali ? 'Gobollada' : 'Regions'),
+            translations.regions,
+            navigator(translations.regions),
           ),
           _DrawerMenuItem(
             Icons.group,
-            isSomali ? 'Beeralayda' : 'Farmers',
-            navigator(isSomali ? 'Beeralayda' : 'Farmers'),
+            translations.farmers,
+            navigator(translations.farmers),
           ),
           _DrawerMenuItem(
             Icons.show_chart,
-            isSomali ? 'Iibka' : 'Sales',
-            navigator(isSomali ? 'Iibka' : 'Sales'),
+            translations.sales,
+            navigator(translations.sales),
           ),
           _DrawerMenuItem(
             Icons.bar_chart,
-            isSomali ? 'Warbixinno' : 'Reports',
-            navigator(isSomali ? 'Warbixinno' : 'Reports'),
+            translations.reports,
+            navigator(translations.reports),
           ),
           _DrawerMenuItem(
             Icons.download,
-            isSomali ? 'Soo-dejinta' : 'Downloads',
-            navigator(isSomali ? 'Soo-dejinta' : 'Downloads'),
+            translations.downloads,
+            navigator(translations.downloads),
           ),
         ];
       case UserRole.expert:
         return [
-          _DrawerMenuItem(Icons.home, isSomali ? 'Guriga' : 'Home', () {
+          _DrawerMenuItem(Icons.home, translations.home, () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (_) => const LandingScreen()),
             );
           }),
           _DrawerMenuItem(
             Icons.question_answer,
-            isSomali ? 'Su\'aalaha' : 'Questions',
-            navigator(isSomali ? 'Su\'aalaha' : 'Questions'),
+            translations.questions,
+            navigator(translations.questions),
           ),
           _DrawerMenuItem(
             Icons.post_add,
-            isSomali ? 'La-talin Ku qaado' : 'Post Advisory',
-            navigator(isSomali ? 'La-talin Ku qaado' : 'Post Advisory'),
+            translations.postAdvisory,
+            navigator(translations.postAdvisory),
           ),
           _DrawerMenuItem(
             Icons.cloud,
-            isSomali ? 'Digniino Cimilada' : 'Weather Alerts',
-            navigator(isSomali ? 'Digniino Cimilada' : 'Weather Alerts'),
+            translations.weatherAlerts,
+            navigator(translations.weatherAlerts),
           ),
           _DrawerMenuItem(
             Icons.menu_book,
-            isSomali ? 'Khayraadka' : 'Resources',
-            navigator(isSomali ? 'Khayraadka' : 'Resources'),
+            translations.resources,
+            navigator(translations.resources),
           ),
           _DrawerMenuItem(
             Icons.message,
-            isSomali ? 'Farriimaha' : 'Messages',
-            navigator(isSomali ? 'Farriimaha' : 'Messages'),
+            translations.messages,
+            navigator(translations.messages),
           ),
-          _DrawerMenuItem(Icons.person, isSomali ? 'Profile' : 'Profile', () {
+          _DrawerMenuItem(Icons.person, translations.profile, () {
             Navigator.of(
               context,
             ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
@@ -699,7 +743,7 @@ class MainDrawer extends StatelessWidget {
       case UserRole.unknown:
       default:
         return [
-          _DrawerMenuItem(Icons.home, isSomali ? 'Guriga' : 'Home', () {
+          _DrawerMenuItem(Icons.home, translations.home, () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const RoleSelectionScreen(),
@@ -708,7 +752,7 @@ class MainDrawer extends StatelessWidget {
           }),
           _DrawerMenuItem(
             Icons.info,
-            isSomali ? 'Nagu Saabsan' : 'About Us',
+            translations.aboutUs,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const AboutScreen()),
@@ -717,7 +761,7 @@ class MainDrawer extends StatelessWidget {
           ),
           _DrawerMenuItem(
             Icons.help_center,
-            isSomali ? 'Sidee Ayuu U Shaqeyaa' : 'How It Works',
+            translations.howItWorks,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(

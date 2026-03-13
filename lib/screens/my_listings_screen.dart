@@ -318,7 +318,7 @@ class _ProductCard extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.edit, color: AppColors.primaryBlue),
+                      icon: Icon(Icons.edit, color: AppColors.primaryBlue),
                       onPressed: onEdit,
                       tooltip: 'Edit',
                     ),
@@ -409,8 +409,8 @@ class _EditProductScreenState extends State<_EditProductScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Product updated successfully!'),
+          SnackBar(
+            content: const Text('Product updated successfully!'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );

@@ -43,7 +43,17 @@ class AppState extends ChangeNotifier {
     _isLoggedIn = false;
     _currentUser = null;
     _authToken = null;
+    // Keep currentRole or reset it? 
+    // Usually, reset to unknown or keep if they want to browse as guests.
+    // Given the app's structure, reset to unknown is safer.
+    _currentRole = UserRole.unknown;
     notifyListeners();
+  }
+
+  // Unified logout
+  Future<void> logout() async {
+    await _authService.logout();
+    clearAuthState();
   }
 
   // Initialize auth state from stored data

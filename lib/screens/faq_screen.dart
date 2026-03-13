@@ -1,45 +1,46 @@
-import 'package:flutter/material.dart';
 import '../widgets/common_ui.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
 
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     final faqs = [
       {
-        'q': 'Is BaadiGoob AgroLink a delivery company?',
-        'a': 'We are a marketplace that coordinates aggregation and delivery through our operations team and partners.'
+        'q': translations.faqQ1,
+        'a': translations.faqA1
       },
       {
-        'q': 'Can I buy small quantities?',
-        'a': 'We focus on bulk and business orders. Minimum order varies by product.'
+        'q': translations.faqQ2,
+        'a': translations.faqA2
       },
       {
-        'q': 'How do prices work?',
-        'a': 'Prices can change based on season and supply. Your order is confirmed before dispatch.'
+        'q': translations.faqQ3,
+        'a': translations.faqA3
       },
       {
-        'q': 'How do I request a bulk quote (RFQ)?',
-        'a': 'Use “Request a Quote,” share product, quantity, delivery location, and preferred date—our team will respond with options.'
+        'q': translations.faqQ4,
+        'a': translations.faqA4
       },
       {
-        'q': 'How do I become a seller?',
-        'a': 'Register, share your products and location, and our team will verify and guide you through listing. Remember this platform is women farmers.'
+        'q': translations.faqQ5,
+        'a': translations.faqA5
       },
       {
-        'q': 'What payment methods are supported?',
-        'a': 'Options depend on location and order type. You’ll see available methods at checkout or during confirmation.'
+        'q': translations.faqQ6,
+        'a': translations.faqA6
       },
       {
-        'q': 'How do I track my order?',
-        'a': 'You receive status updates from confirmation to delivery.'
+        'q': translations.faqQ7,
+        'a': translations.faqA7
       },
     ];
 
     return BaseScreen(
-      title: 'FAQ',
+      title: translations.faqTitle,
       body: ListView.separated(
         padding: const EdgeInsets.all(24.0),
         itemCount: faqs.length,

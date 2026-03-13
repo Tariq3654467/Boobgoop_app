@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/app_state.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import 'registration_screen.dart';
 import '../widgets/main_drawer.dart';
 import 'how_it_works_screen.dart';
@@ -18,7 +19,7 @@ class RoleSelectionScreen extends StatelessWidget {
         elevation: 0,
         foregroundColor: AppColors.primaryBlue,
       ),
-      drawer: MainDrawer(),
+      drawer: const MainDrawer(),
       body: Stack(
         children: [
           // Background Branding
@@ -33,14 +34,14 @@ class RoleSelectionScreen extends StatelessWidget {
           ),
           
           SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 120),
                   Text(
-                    'Join the Marketplace',
+                    translations.joinMarketplace,
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
                           fontSize: 32,
                           color: AppColors.primaryBlue,
@@ -48,16 +49,16 @@ class RoleSelectionScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Connecting verified Somali female farmers directly to bulk buyers.',
+                    translations.roleSelectionSubtitle,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 40),
                   
                   // Seller Card
                   _RoleCard(
-                    title: 'Sellers',
-                    subtitle: 'Get consistent buyers and faster sales.',
-                    cta: 'Become a Seller',
+                    title: translations.sellersLabel,
+                    subtitle: translations.sellersSubtitle,
+                    cta: translations.becomeSeller,
                     imagePath: 'assets/images/farmer-portrait-1.jpg',
                     onTap: () {
                       context.read<AppState>().setRole(UserRole.seller);
@@ -69,9 +70,9 @@ class RoleSelectionScreen extends StatelessWidget {
                   
                   // Buyer Card
                   _RoleCard(
-                    title: 'Buyers',
-                    subtitle: 'Order smarter, reduce shortages.',
-                    cta: 'Register as a Buyer',
+                    title: translations.buyersLabel,
+                    subtitle: translations.buyersSubtitle,
+                    cta: translations.registerAsBuyer,
                     imagePath: 'assets/images/farmer-portrait-2.jpg',
                     onTap: () {
                       context.read<AppState>().setRole(UserRole.buyer);
@@ -81,22 +82,22 @@ class RoleSelectionScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   // Driver / Transporter Card
                   _RoleCard(
-                    title: 'Transporters',
-                    subtitle: 'Receive delivery assignments and earn per trip.',
-                    cta: 'Register as Driver',
+                    title: translations.transportersLabel,
+                    subtitle: translations.transportersSubtitle,
+                    cta: translations.registerAsDriver,
                     imagePath: 'assets/images/farmer-portrait-1.jpg',
                     onTap: () {
                       context.read<AppState>().setRole(UserRole.driver);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationScreen(role: 'Driver')));
                     },
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HowItWorksScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const HowItWorksScreen()));
                     },
                     child: Text(
-                      'How it works? Read our Guide',
+                      translations.readOurGuide,
                       style: TextStyle(color: AppColors.primaryBlue, fontWeight: FontWeight.bold),
                     ),
                   ),

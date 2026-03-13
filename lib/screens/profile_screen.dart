@@ -1,14 +1,21 @@
-import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import '../models/app_state.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
+    final appState = Provider.of<AppState>(context);
+    final user = appState.currentUser;
+    final name = '${user?['first_name'] ?? translations.user} ${user?['last_name'] ?? ''}'.trim();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: Text(translations.profile),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -23,38 +30,44 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const Center(
+          Center(
             child: Text(
-              'User Name',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              name,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 40),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Account Settings'),
+            title: Text(translations.accountSettings),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.language),
-            title: const Text('Language Preferences'),
+            title: Text(translations.languagePreferences),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.privacy_tip),
-            title: const Text('Privacy & Security'),
+            title: Text(translations.privacySecurity),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Logout', style: TextStyle(color: Colors.red)),
-            onTap: () {},
+            title: Text(translations.logout, style: const TextStyle(color: Colors.red)),
+            onTap: () {
+              appState.logout();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
           ),
         ],
       ),

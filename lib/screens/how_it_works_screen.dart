@@ -1,41 +1,42 @@
-import 'package:flutter/material.dart';
 import '../widgets/common_ui.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
 
 class HowItWorksScreen extends StatelessWidget {
   const HowItWorksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return BaseScreen(
-      title: 'How It Works',
+      title: translations.howItWorks,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(title: 'Simple ordering. Coordinated fulfilment. Reliable delivery.'),
+            SectionHeader(title: translations.howItWorksFooter),
             
-            SectionHeader(title: 'For Buyers', color: AppColors.accentOrange),
-            _stepRow('1', 'Shop or Request a Quote', 'Choose products or send an RFQ for bulk volumes and repeat routines.'),
-            _stepRow('2', 'Order Confirmation', 'We confirm availability, grade, quantity, and delivery window before dispatch.'),
-            _stepRow('3', 'Aggregation & Packing Coordination', 'Our team coordinates aggregation and packing to reduce spoilage and delays.'),
-            _stepRow('4', 'Delivery & Proof of Delivery', 'Receive updates and confirmation when the order is delivered.'),
+            SectionHeader(title: translations.howItWorksForBuyers, color: AppColors.accentOrange),
+            _stepRow('1', translations.buyerStep1Title, translations.buyerStep1Desc),
+            _stepRow('2', translations.buyerStep2Title, translations.buyerStep2Desc),
+            _stepRow('3', translations.buyerStep3Title, translations.buyerStep3Desc),
+            _stepRow('4', translations.buyerStep4Title, translations.buyerStep4Desc),
             
             const SizedBox(height: 24),
             
-            SectionHeader(title: 'For Sellers', color: AppColors.secondaryGreen),
-            _stepRow('1', 'Register & Share Your Supply', 'Products, location, volume, and availability schedule.'),
-            _stepRow('2', 'Verification & Onboarding', 'We verify details to build buyer trust.'),
-            _stepRow('3', 'Receive Orders', 'Clear quantities, timing, and fulfilment instructions.'),
-            _stepRow('4', 'Grow with Consistency', 'Reliable performance increases buyer confidence and repeat orders.'),
+            SectionHeader(title: translations.howItWorksForSellers, color: AppColors.secondaryGreen),
+            _stepRow('1', translations.sellerStep1Title, translations.sellerStep1Desc),
+            _stepRow('2', translations.sellerStep2Title, translations.sellerStep2Desc),
+            _stepRow('3', translations.sellerStep3Title, translations.sellerStep3Desc),
+            _stepRow('4', translations.sellerStep4Title, translations.sellerStep4Desc),
             
-            const SectionHeader(title: 'What BaadiGoob Coordinates'),
-            const BulletPoint(text: 'Order confirmation'),
-            const BulletPoint(text: 'Aggregation planning'),
-            const BulletPoint(text: 'Packing coordination'),
-            const BulletPoint(text: 'Delivery scheduling'),
-            const BulletPoint(text: 'Customer support'),
+            SectionHeader(title: translations.whatBaadiGoobCoordinates),
+            BulletPoint(text: translations.orderConfirmation),
+            BulletPoint(text: translations.aggregationPlanning),
+            BulletPoint(text: translations.packingCoordination),
+            BulletPoint(text: translations.deliveryScheduling),
+            BulletPoint(text: translations.customerSupport),
           ],
         ),
       ),

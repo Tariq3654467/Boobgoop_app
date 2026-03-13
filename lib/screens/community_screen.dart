@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 
@@ -38,9 +39,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Community Forum'),
+        title: Text(translations.communityForum),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -48,7 +50,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Not implemented yet')),
+            SnackBar(content: Text(translations.notImplemented)),
           );
         },
         backgroundColor: AppColors.accentOrange,
@@ -63,13 +65,14 @@ class _CommunityScreenState extends State<CommunityScreen> {
     }
 
     if (_error != null) {
+      final translations = AppLocalizations.of(context).translations;
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
-            Text('Error loading posts', style: Theme.of(context).textTheme.titleLarge),
+            Text(translations.errorLoading, style: Theme.of(context).textTheme.titleLarge),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
@@ -86,7 +89,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 });
                 _fetchPosts();
               },
-              child: const Text('Retry'),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -94,8 +97,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
     }
 
     if (_posts.isEmpty) {
-      return const Center(
-        child: Text('No posts found. Be the first to start a discussion!'),
+      final translations = AppLocalizations.of(context).translations;
+      return Center(
+        child: Text(translations.noData),
       );
     }
 
@@ -106,7 +110,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
       itemBuilder: (context, index) {
         final post = _posts[index];
         final author = post['author'] ?? {};
-        final name = '${author['firstName'] ?? 'User'} ${author['lastName'] ?? ''}'.trim();
+        final translations = AppLocalizations.of(context).translations;
+        final name = '${author['firstName'] ?? translations.user} ${author['lastName'] ?? ''}'.trim();
         
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,7 +146,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              post['title'] ?? 'No Title',
+              post['title'] ?? translations.noTitle,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -162,7 +167,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 Text('${post['commentsCount'] ?? 0}'),
                 const Spacer(),
                 Text(
-                  post['views'] != null ? '${post['views']} views' : '',
+                  post['views'] != null ? '${post['views']} ${translations.views}' : '',
                   style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                 ),
               ],

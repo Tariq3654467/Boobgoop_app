@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_localizations.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -40,11 +39,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Orders'),
+        title: Text(translations.myOrders),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -63,7 +61,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
             Text(
-              'Error loading orders',
+              AppLocalizations.of(context).translations.errorLoading,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             Padding(
@@ -82,7 +80,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 });
                 _fetchOrders();
               },
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context).translations.retry),
             ),
           ],
         ),
@@ -90,7 +88,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     }
 
     if (_orders.isEmpty) {
-      return const Center(child: Text('No orders found.'));
+      return Center(child: Text(AppLocalizations.of(context).translations.noData));
     }
 
     return ListView.builder(
@@ -110,7 +108,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Order #${order['id']?.toString().substring(0, 8) ?? ''}',
+                      '${translations.orderHash}${order['id']?.toString().substring(0, 8) ?? ''}',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
@@ -125,7 +123,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        (order['status'] ?? 'Unknown').toString().toUpperCase(),
+                        _getStatusLabel(order['status'], translations),
                         style: TextStyle(
                           color: _getStatusColor(order['status']),
                           fontSize: 12,
@@ -137,12 +135,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Total: \$${order['total'] ?? '0.00'}',
+                  '${translations.totalAmount}: SOS ${order['total'] ?? '0.00'}',
                   style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Date: ${order['createdAt'] != null ? DateTime.parse(order['createdAt']).toString().split(' ')[0] : 'Unknown'}',
+                  '${translations.dateLabel}: ${order['createdAt'] != null ? DateTime.parse(order['createdAt']).toString().split(' ')[0] : translations.statusUnknown}',
                   style: TextStyle(color: Colors.grey[600], fontSize: 12),
                 ),
               ],
@@ -151,6 +149,25 @@ class _OrdersScreenState extends State<OrdersScreen> {
         );
       },
     );
+  }
+
+  String _getStatusLabel(String? status, AppTranslations translations) {
+    switch (status?.toLowerCase()) {
+      case 'completed':
+        return translations.statusCompleted;
+      case 'delivered':
+        return translations.statusDelivered;
+      case 'pending':
+        return translations.statusPending;
+      case 'processing':
+        return translations.statusProcessing;
+      case 'in_transit':
+        return translations.statusInTransit;
+      case 'cancelled':
+        return translations.statusCancelled;
+      default:
+        return translations.statusUnknown;
+    }
   }
 
   Color _getStatusColor(String? status) {

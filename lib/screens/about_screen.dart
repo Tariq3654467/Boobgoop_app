@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../widgets/common_ui.dart';
 import '../theme/app_colors.dart';
 
@@ -7,35 +8,36 @@ class AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return BaseScreen(
-      title: 'About Us',
+      title: translations.aboutUs,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SectionHeader(title: 'About BaadiGoob AgroLink'),
-            const Text(
-              'BaadiGoob AgroLink is a produce marketplace built to strengthen Somali market systems, especially by improving market access and income for women farmers. We connect verified farmers and suppliers with serious buyers (restaurants, hotels, supermarkets, caterers, institutions, and families).',
-              style: TextStyle(fontSize: 16, height: 1.5),
+            SectionHeader(title: translations.aboutBaadigoob),
+            Text(
+              translations.aboutDescription1,
+              style: const TextStyle(fontSize: 16, height: 1.5),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Our operations team supports the full ordering process, from confirming availability and pricing to coordinating aggregation and delivery, so trade becomes more organised, transparent, and reliable.',
-              style: TextStyle(fontSize: 16, height: 1.5),
+            Text(
+              translations.aboutDescription2,
+              style: const TextStyle(fontSize: 16, height: 1.5),
             ),
-            const SectionHeader(title: 'Our Mission'),
-            const Text(
-              'To expand market access for women farmers, reduce waste, and increase incomes through a trusted, tech-enabled produce marketplace.',
-              style: TextStyle(fontSize: 16, height: 1.5, fontWeight: FontWeight.bold),
+            SectionHeader(title: translations.ourMission),
+            Text(
+              translations.missionDescription,
+              style: const TextStyle(fontSize: 16, height: 1.5, fontWeight: FontWeight.bold),
             ),
-            const SectionHeader(title: 'Core Values'),
-            const BulletPoint(text: 'Trust'),
-            const BulletPoint(text: 'Coordination'),
-            const BulletPoint(text: 'Fair Trade'),
-            const BulletPoint(text: 'Reliability'),
-            const BulletPoint(text: 'Women’s Economic Empowerment'),
-            const BulletPoint(text: 'Local Growth'),
+            SectionHeader(title: translations.coreValues),
+            BulletPoint(text: translations.trust),
+            BulletPoint(text: translations.coordination),
+            BulletPoint(text: translations.fairTrade),
+            BulletPoint(text: translations.reliability),
+            BulletPoint(text: translations.womenEmpowerment),
+            BulletPoint(text: translations.localGrowth),
             const SizedBox(height: 40),
             Center(
               child: Image.asset('assets/logo/logo.png', width: 200),

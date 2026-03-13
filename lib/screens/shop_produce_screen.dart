@@ -1,16 +1,18 @@
-import 'package:flutter/material.dart';
 import '../widgets/common_ui.dart';
 import '../theme/app_colors.dart';
 import '../widgets/main_drawer.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/app_translations.dart';
 
 class ShopProduceScreen extends StatelessWidget {
   const ShopProduceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Shop Produce'),
+        title: Text(translations.shopProduce),
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.white,
       ),
@@ -20,34 +22,34 @@ class ShopProduceScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionHeader(title: 'Browse Fresh Produce'),
+            SectionHeader(title: translations.browseFreshProduce),
             Text(
-              'Browse fresh produce from verified suppliers. Prices and availability may change daily—place your order to confirm stock and delivery schedule.',
+              translations.browseProduceDesc,
               style: TextStyle(color: AppColors.textMedium),
             ),
             const SizedBox(height: 24),
             
             // Search & Filter Bar (Visual Placeholder)
-            _searchBar(),
+            _searchBar(translations),
             const SizedBox(height: 16),
             _filterChips(),
             const SizedBox(height: 24),
             
-            SectionHeader(title: 'Featured Categories'),
-            _categoryGrid(),
+            SectionHeader(title: translations.featuredCategories),
+            _categoryGrid(translations),
             const SizedBox(height: 32),
             
-            SectionHeader(title: 'Fresh Arrivals'),
-            _productItem('Tomatoes', 'Standard', '10kg', 'In Stock', 'assets/images/tomatoes.png'),
-            _productItem('Mangoes', 'Premium', '5kg', 'Limited', 'assets/images/fresh-produce.jpg'),
-            _productItem('Potatoes', 'Standard', '50kg', 'In Stock', 'assets/images/yellow_maize.png'),
-            _productItem('Watermelon', 'Premium', '20kg', 'Limited', 'assets/images/fresh-produce.jpg'),
-            _productItem('Lemon/Lime', 'Standard', '5kg', 'In Stock', 'assets/images/vegetables.png'),
-            _productItem('Banana', 'Standard', '20kg', 'In Stock', 'assets/images/Fresh_banana_gradeA.png'),
+            SectionHeader(title: translations.freshArrivals),
+            _productItem('Tomatoes', 'Standard', '10kg', translations.inStock, 'assets/images/tomatoes.png', translations),
+            _productItem('Mangoes', 'Premium', '5kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
+            _productItem('Potatoes', 'Standard', '50kg', translations.inStock, 'assets/images/yellow_maize.png', translations),
+            _productItem('Watermelon', 'Premium', '20kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
+            _productItem('Lemon/Lime', 'Standard', '5kg', translations.inStock, 'assets/images/vegetables.png', translations),
+            _productItem('Banana', 'Standard', '20kg', translations.inStock, 'assets/images/Fresh_banana_gradeA.png', translations),
             
             const SizedBox(height: 24),
             Text(
-              'Note: Final confirmation (availability, price, and delivery window) is completed before dispatch.',
+              translations.finalConfirmationNote,
               style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic, color: AppColors.textLight),
             ),
           ],
@@ -56,10 +58,10 @@ class ShopProduceScreen extends StatelessWidget {
     );
   }
 
-  Widget _searchBar() {
+  Widget _searchBar(AppTranslations translations) {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'Search products...',
+        hintText: translations.searchProducts,
         prefixIcon: const Icon(Icons.search),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
         contentPadding: const EdgeInsets.symmetric(vertical: 0),
@@ -83,12 +85,12 @@ class ShopProduceScreen extends StatelessWidget {
     );
   }
 
-  Widget _categoryGrid() {
+  Widget _categoryGrid(AppTranslations translations) {
     final cats = [
-      {'name': 'Vegetables', 'icon': Icons.eco},
-      {'name': 'Fruits', 'icon': Icons.apple},
-      {'name': 'Grains', 'icon': Icons.grain},
-      {'name': 'Herbs', 'icon': Icons.spa},
+      {'name': translations.categoryVegetables, 'icon': Icons.eco},
+      {'name': translations.categoryFruits, 'icon': Icons.apple},
+      {'name': translations.categoryGrains, 'icon': Icons.grain},
+      {'name': translations.categoryHerbs, 'icon': Icons.spa},
     ];
     return GridView.builder(
       shrinkWrap: true,
@@ -120,7 +122,7 @@ class ShopProduceScreen extends StatelessWidget {
     );
   }
 
-  Widget _productItem(String name, String grade, String minOrder, String status, String image) {
+  Widget _productItem(String name, String grade, String minOrder, String status, String image, AppTranslations translations) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -147,7 +149,7 @@ class ShopProduceScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text('Grade: $grade • Min: $minOrder', style: TextStyle(color: AppColors.textMedium)),
+                  Text('${translations.gradeLabel}: $grade • Min: $minOrder', style: TextStyle(color: AppColors.textMedium)),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -158,7 +160,7 @@ class ShopProduceScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             textStyle: const TextStyle(fontSize: 12),
                           ),
-                          child: const Text('Add to Cart'),
+                          child: Text(translations.addToCart),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -169,7 +171,7 @@ class ShopProduceScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(8),
                             side: BorderSide(color: AppColors.primary),
                           ),
-                          child: const Text('Request Quote', style: TextStyle(fontSize: 12)),
+                          child: Text(translations.requestQuote, style: const TextStyle(fontSize: 12)),
                         ),
                       ),
                     ],
@@ -193,7 +195,7 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-      color: status == 'In Stock' ? AppColors.secondary : AppColors.accent,
+      color: (status == 'In Stock' || status == AppLocalizations.of(context).translations.inStock) ? AppColors.secondary : AppColors.accent,
       borderRadius: BorderRadius.circular(AppColors.borderRadiusSmall),
       ),
       child: Text(

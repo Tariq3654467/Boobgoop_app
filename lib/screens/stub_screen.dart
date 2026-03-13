@@ -20,15 +20,15 @@ class StubScreen extends StatelessWidget {
             Icon(Icons.construction, size: 80, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
-              '$title',
+              title,
               style: Theme.of(context).textTheme.headlineSmall,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            const Text(
-              'This view is currently under construction.\nCheck back in a future update.',
+            Text(
+              AppLocalizations.of(context).translations.underConstruction,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
