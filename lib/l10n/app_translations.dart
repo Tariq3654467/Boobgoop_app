@@ -236,6 +236,201 @@ class AppTranslations {
   String get dispatch => languageCode == 'so' ? 'Dirista' : 'Dispatch';
   String get impact => languageCode == 'so' ? 'Saameynta' : 'Impact';
   String get regions => languageCode == 'so' ? 'Gobollada' : 'Regions';
+  // How It Works
+  String get howItWorks => languageCode == 'so' ? 'Sidee Ayuu U Shaqeyaa' : 'How It Works';
+  String get step1 => languageCode == 'so' ? 'Baadh & dooro alaabta' : 'Browse & choose products';
+  String get step2 => languageCode == 'so' ? 'Dalbo ama Codso Qiimaha' : 'Place an order or Request Quote';
+  String get step3 => languageCode == 'so' ? 'Waanu xaqiijinaynaa oo isku dubaridnaa bixinta' : 'We confirm & coordinate supply';
+  String get step4 => languageCode == 'so' ? 'Keenista oo lagu habeeyey cusboonaysiin' : 'Delivery arranged with updates';
+  String get viewDetailedGuide => languageCode == 'so' ? 'Eeg Hagaha Faahfaahsan' : 'View Detailed Guide';
+  
+  // CTA Section
+  String get readyToJoin => languageCode == 'so' ? 'Ma diyaar u tahay inaad ku biirto?' : 'Ready to join?';
+  String get getStarted => languageCode == 'so' ? 'Bilow / Doonto' : 'Get Started / Register';
+  
+  // Market Prices Section
+  String get livePrices => languageCode == 'so' ? 'Qiimaha Tooska ah' : 'Live Prices';
+  String get todaysMarketPrices => languageCode == 'so' ? 'Qiimaha Suuqa Maanta' : 'Today\'s Market Prices';
+  String get marketPricesDesc => languageCode == 'so' 
+    ? 'Is barbar dhig qiimaha beeraha suuqyada waaweyn ee Soomaaliya si aad u hesho heshiiska ugu fiican.'
+    : 'Compare crop prices across Somalia\'s major markets to get the best deal for your harvest.';
+  
+  // Weather Section
+  String get weatherUpdates => languageCode == 'so' ? 'Warbixinta Cimilada' : 'Weather Updates';
+  String get weatherAdvisory => languageCode == 'so' ? 'Talo-bixinta Cimilada' : 'Weather Advisory';
+  String get weatherDesc => languageCode == 'so' 
+    ? 'Qorshe goosashada iyo gaadiidka oo leh saadaasha cimilada saxda ah ee gobolkaaga.'
+    : 'Plan your harvest and transport with accurate weather forecasts for your region.';
+  String get currentWeather => languageCode == 'so' ? 'Cimilada Hadda — Gobolka Muqdisho' : 'Current Weather — Mogadishu Region';
+  String get idealForHarvesting => languageCode == 'so' ? 'Qorrax — Ku haboon goosashada' : 'Sunny — Ideal for harvesting';
+  String get humidity => languageCode == 'so' ? 'qoyaan' : 'humidity';
+  String get wind => languageCode == 'so' ? 'dabayl' : 'wind';
+  String get uvIndex => languageCode == 'so' ? 'Heerka UV: Sare' : 'UV Index: High';
+  String get farmingAdvisory => languageCode == 'so' ? 'Talo Beereed:' : 'Farming Advisory:';
+  String get farmingAdvisoryText => languageCode == 'so'
+    ? 'Xaaladda aad u fiican goosashada iyo gaadiidka beeraha 3-da maalmood ee soo socda. Ka fiirso shaqada dibedda Khamiista sababo la xiriira roobka fudud ee la filayo.'
+    : 'Excellent conditions for harvesting and transporting crops over the next 3 days. Consider delaying outdoor work on Thursday due to expected light rainfall.';
+  String get today => languageCode == 'so' ? 'Maanta' : 'Today';
+  String get tomorrow => languageCode == 'so' ? 'Berri' : 'Tomorrow';
+  
+  // Marketplace Section
+  String get buySell => languageCode == 'so' ? 'Iib & Gado' : 'Buy & Sell';
+  String get freshFromFarm => languageCode == 'so' ? 'Cusub Beerta ka yimid' : 'Fresh from the Farm';
+  String get marketplaceDesc => languageCode == 'so'
+    ? 'Daawad liiskii beeraha haweenka la xaqiijiyay ee Soomaaliya. Si toos ah u iibso — dhexdhexaad la\'aan.'
+    : 'Browse produce listings from verified female farmers across Somalia. Buy directly — no middlemen.';
+  String get order => languageCode == 'so' ? 'Dalbo' : 'Order';
+  String get viewAllListings => languageCode == 'so' ? 'Arag Dhammaan Liiska' : 'View All Listings';
+  String get available => languageCode == 'so' ? 'la heli karo' : 'available';
+  
+  // Community Section
+  String get learnConnect => languageCode == 'so' ? 'Baro & Ku Xidh' : 'Learn & Connect';
+  String get communityLearning => languageCode == 'so' ? 'Bulshada & Barashada' : 'Community & Learning';
+  String get communityDesc => languageCode == 'so'
+    ? 'Kor u qaad aqoontaada oo ku xidh shabakad taageero leh oo beeraley iyo khubuuro ah.'
+    : 'Grow your knowledge and connect with a supportive network of farmers and experts.';
+  String get communityForum => languageCode == 'so' ? 'Madasha Bulshada' : 'Community Forum';
+  String get communityForumDesc => languageCode == 'so'
+    ? 'Su\'aalo weydii, khibrado la wadaag, oo ka jawaab hel beeraleyda kale iyo khuburada beeraha.'
+    : 'Ask questions, share experiences, and get answers from fellow farmers and agricultural experts.';
+  String get videoTutorials => languageCode == 'so' ? 'Muuqaalada Tababarka' : 'Video Tutorials';
+  String get videoTutorialsDesc => languageCode == 'so'
+    ? 'Daawo tababarrada beeraha oo tillaabo tillaabo ah oo ku saabsan farsamooyinka, daryeelka dhulka, iyo maaraynta beeraha.'
+    : 'Watch step-by-step farming tutorials on improved techniques, soil care, and crop management.';
+  String get farmingTips => languageCode == 'so' ? 'Talooyin Beereed' : 'Farming Tips';
+  String get farmingTipsDesc => languageCode == 'so'
+    ? 'Hel tilmaamaha xilliga, noocyada beeraha la hagaajiyay, iyo dhaqamada ugu wanaagsan gobolkaaga.'
+    : 'Access seasonal guides, improved crop varieties, and best practices for your region.';
+  String get expertNetwork => languageCode == 'so' ? 'Shabakadda Khuburada' : 'Expert Network';
+  String get expertNetworkDesc => languageCode == 'so'
+    ? 'La xiriir khuburada beeraha ee kaa caawin kara xallinta dhibaatooyinka iyo hagaajinta wax soo saarka.'
+    : 'Connect with agricultural specialists who can help you solve problems and improve yields.';
+  String get joinCommunity => languageCode == 'so' ? 'Ku Biir Bulshada' : 'Join the Community';
+  
+  // Testimonials Section
+  String get satisfiedClients => languageCode == 'so' ? 'Macaamiisha Ku Qanacsanayd' : 'Satisfied Clients';
+  String get whatFarmersSay => languageCode == 'so' ? 'Maxay Beeraleydeenu Yidhaahdaan' : 'What Our Farmers Say';
+  String get testimonialsDesc => languageCode == 'so'
+    ? 'Ka maqal haweenka nolol maalmeedkooda ku bedelaya BaadiGoob AgroLink.'
+    : 'Hear from the women who are transforming their livelihoods with BaadiGoob AgroLink.';
+  
+  // Footer Section
+  String get footerDesc => languageCode == 'so'
+    ? 'Awood siinta beeraha haweenka Soomaaliyeed oo leh gelitaanka suuqa, warbixinta cimilada, iibsadayaasha, iyo bulsho taageero leh.'
+    : 'Empowering Somali female farmers with market access, weather insights, buyers, and a supportive community.';
+  String get features => languageCode == 'so' ? 'Astaamaha' : 'Features';
+  String get resources => languageCode == 'so' ? 'Kheyraadka' : 'Resources';
+  String get seedOrdering => languageCode == 'so' ? 'Dalashada Abuurka' : 'Seed Ordering';
+  String get governmentSchemes => languageCode == 'so' ? 'Mashruucyada Dawladda' : 'Government Schemes';
+  String get contact => languageCode == 'so' ? 'La Xiriir' : 'Contact';
+  String get footerCopy => languageCode == 'so'
+    ? '© 2026 BaadiGoob AgroLink. Dhammaan xuquuqda way xidhanyihiin. Awood siinta beeraleyda, hal goosasho mar.'
+    : '© 2026 BaadiGoob AgroLink. All rights reserved. Empowering farmers, one harvest at a time.';
+  
+  // Common UI
+  String get errorLoading => languageCode == 'so' ? 'Cillad ayaa ka dhacday soo dejinta' : 'Error loading content';
+  String get retry => languageCode == 'so' ? 'Ku celi' : 'Retry';
+  String get noData => languageCode == 'so' ? 'Xog lama heli karo' : 'No data available';
+  String get loading => languageCode == 'so' ? 'Waa la soo dejinayaa...' : 'Loading...';
+  String get unknownProduct => languageCode == 'so' ? 'Alaab aan la aqoon' : 'Unknown Product';
+  String get weatherForecast => languageCode == 'so' ? 'Saadaasha Hawada' : 'Weather Forecast';
+  String get upcomingForecast => languageCode == 'so' ? 'Saadaasha Soo Socota' : 'Upcoming Forecast';
+  String get unknownWeather => languageCode == 'so' ? 'Lama yaqaan' : 'Unknown';
+  String get notImplemented => languageCode == 'so' ? 'Weli lama fulin' : 'Not implemented yet';
+  String get noPosts => languageCode == 'so' ? 'Wax qoraal ah lama helin. Noqo qofka ugu horreeya ee bilaaba dood!' : 'No posts found. Be the first to start a discussion!';
+  String get views => languageCode == 'so' ? 'daawasho' : 'views';
+  String get noTitle => languageCode == 'so' ? 'Cinwaan la\'aan' : 'No Title';
+  String get contactUs => languageCode == 'so' ? 'Nala Soo Xiriir' : 'Contact Us';
+  String get getInTouch => languageCode == 'so' ? 'Nala Soo Xiriir' : 'Get in Touch';
+  String get contactDescription => languageCode == 'so'
+      ? 'Waxaan jeclaan lahayn inaan kaa maqalno. Haddii aad tahay iibsadaha raadinaya wax soo saarka cusub, beeralay/alaab-qeybiye xiiseynaya inuu wax ku iibiyo BaadiGoob AgroLink, ama saaxiib raba inuu nala shaqeeyo—nalasoo xiriir wakhti kasta.'
+      : 'We’d love to hear from you. Whether you’re a buyer looking to source fresh produce, a farmer/supplier interested in selling through BaadiGoob AgroLink, or a partner who wants to collaborate—reach out anytime.';
+  String get website => languageCode == 'so' ? 'Webusaytka' : 'Website';
+  String get email => languageCode == 'so' ? 'Iimayl' : 'Email';
+  String get phoneWhatsApp => languageCode == 'so' ? 'Telefoon / WhatsApp' : 'Phone / WhatsApp';
+  String get callCenter => languageCode == 'so' ? 'Xarunta Wicitaanka' : 'Call Center';
+  String get location => languageCode == 'so' ? 'Goobta' : 'Location';
+  String get socialMedia => languageCode == 'so' ? 'Baraha Bulshada' : 'Social Media';
+  String get followUs => languageCode == 'so' ? 'Nala soco oo la soco wixii ku cusub: @baadigoobonline' : 'Follow us and stay updated: @baadigoobonline';
+  String get readyToPartner => languageCode == 'so' ? 'Ma diyaar u tahay inaad nala shaqeyso?' : 'Ready to partner with us?';
+  String get letConnectFarmers => languageCode == 'so'
+      ? 'Aynu isku xidhno beeralayda iyo suuqyada—si daah-furan oo waara'
+      : 'Let’s connect farmers to markets—transparently and sustainably';
+  String get aboutBaadigoob => languageCode == 'so' ? 'Ku saabsan BaadiGoob AgroLink' : 'About BaadiGoob AgroLink';
+  String get aboutDescription1 => languageCode == 'so'
+      ? 'BaadiGoob AgroLink waa suuq wax soo saar oo loo dhisay in lagu xoojiyo nidaamyada suuqyada Soomaaliya, gaar ahaan hagaajinta helitaanka suuqa iyo dakhliga beeralayda haweenka ah. Waxaan isku xirnaa beeralayda iyo alaab-qeybiyeyaasha la xaqiijiyay iyo iibsadayaasha dhabta ah (maqaayadaha, hoteelada, dukaamada waaweyn, kuwa wax kariya, hay\'adaha, iyo qoysaska).'
+      : 'BaadiGoob AgroLink is a produce marketplace built to strengthen Somali market systems, especially by improving market access and income for women farmers. We connect verified farmers and suppliers with serious buyers (restaurants, hotels, supermarkets, caterers, institutions, and families).';
+  String get aboutDescription2 => languageCode == 'so'
+      ? 'Kooxdayada hawlgalku waxay taageeraan dhammaan habka dalbashada, laga bilaabo xaqiijinta helitaanka iyo qiimaha ilaa isku-dubbaridka isu-ururinta iyo keenista, si ganacsigu u noqdo mid abaabulan, hufan, oo la isku halleyn karo.'
+      : 'Our operations team supports the full ordering process, from confirming availability and pricing to coordinating aggregation and delivery, so trade becomes more organised, transparent, and reliable.';
+  String get ourMission => languageCode == 'so' ? 'Hadafkayaga' : 'Our Mission';
+  String get missionDescription => languageCode == 'so'
+      ? 'In la ballaadhiyo helitaanka suuqa ee beeralayda haweenka ah, la yareeyo qashinka, lana kordhiyo dakhliga iyada oo loo maro suuq wax soo saar oo la aamini karo oo tiknoolajiyadu awood u siisay.'
+      : 'To expand market access for women farmers, reduce waste, and increase incomes through a trusted, tech-enabled produce marketplace.';
+  String get coreValues => languageCode == 'so' ? 'Qiimayaasha Muhiimka ah' : 'Core Values';
+  String get trust => languageCode == 'so' ? 'Aamin' : 'Trust';
+  String get coordination => languageCode == 'so' ? 'Isku-dubbaridka' : 'Coordination';
+  String get fairTrade => languageCode == 'so' ? 'Ganacsi Cadaalad ah' : 'Fair Trade';
+  String get reliability => languageCode == 'so' ? 'Isku-halaynta' : 'Reliability';
+  String get womenEmpowerment => languageCode == 'so' ? 'Awoodsiinta Dhaqaale ee Haweenka' : 'Women’s Economic Empowerment';
+  String get localGrowth => languageCode == 'so' ? 'Kicinta Maxalliga ah' : 'Local Growth';
+  String get readyToPartnerLong => languageCode == 'so' ? 'Ma diyaar u tahay inaad nala shaqeyso?' : 'Ready to partner with us?';
+  
+  // Additional common strings
+  String get language => languageCode == 'so' ? 'Afka' : 'Language';
+  String get english => languageCode == 'so' ? 'Ingiriisi' : 'English';
+  String get somali => languageCode == 'so' ? 'Soomaali' : 'Somali';
+  String get changeLanguage => languageCode == 'so' ? 'Bedel Afka' : 'Change Language';
+  String get switchRole => languageCode == 'so' ? 'Dooro Doorka' : 'Switch Role';
+  String get version => languageCode == 'so' ? 'Heerka' : 'Version';
+  String get user => languageCode == 'so' ? 'Isticmaalaha' : 'User';
+
+  // Roles
+  String get roleBuyer => languageCode == 'so' ? 'Iibsadaha' : 'Buyer';
+  String get roleSeller => languageCode == 'so' ? 'Iibiyaha' : 'Seller';
+  String get roleDriver => languageCode == 'so' ? 'Darawalka' : 'Driver';
+  String get roleAdmin => languageCode == 'so' ? 'Maamulaha' : 'Admin';
+  String get roleOps => languageCode == 'so' ? 'Wakiilka' : 'Ops / Agent';
+  String get roleFinance => languageCode == 'so' ? 'Maaliyadda' : 'Finance';
+  String get roleHub => languageCode == 'so' ? 'Xarunta' : 'Hub Staff';
+  String get rolePartner => languageCode == 'so' ? 'Shuraakada' : 'Partner';
+  String get roleExpert => languageCode == 'so' ? 'Khabiir' : 'Expert';
+  String get roleChoose => languageCode == 'so' ? 'Dooro Doorka' : 'Choose a Role';
+
+  // Drawer labels
+  String get marketPricesTitle => languageCode == 'so' ? 'Qiimaha Suuqa' : 'Market Prices';
+  String get addProduce => languageCode == 'so' ? 'Ku dar Wax-soo-saarka' : 'Add Produce';
+  String get myListings => languageCode == 'so' ? 'Liiska Iibka' : 'My Listings';
+  String get orders => languageCode == 'so' ? 'Dalabaadka' : 'Orders';
+  String get weatherTitle => languageCode == 'so' ? 'Cimilada' : 'Weather';
+  String get communityTitle => languageCode == 'so' ? 'Bulshada' : 'Community';
+  String get support => languageCode == 'so' ? 'Taageero' : 'Support';
+  String get dashboard => languageCode == 'so' ? 'Dashboard' : 'Dashboard';
+  String get farmers => languageCode == 'so' ? 'Beeralayda' : 'Farmers';
+  String get logistics => languageCode == 'so' ? 'Saadka' : 'Logistics';
+  String get issues => languageCode == 'so' ? 'Arrimaha' : 'Issues';
+  String get reports => languageCode == 'so' ? 'Warbixinno' : 'Reports';
+  String get myTrips => languageCode == 'so' ? 'Safarradayda' : 'My Trips';
+  String get pickups => languageCode == 'so' ? 'Qaadista' : 'Pickups';
+  String get deliveries => languageCode == 'so' ? 'Gawaarida' : 'Deliveries';
+  String get pod => languageCode == 'so' ? 'Caddaynta Gaarsiinta' : 'Proof of Delivery';
+  String get earnings => languageCode == 'so' ? 'Dakhliga' : 'Earnings';
+  String get usersRoles => languageCode == 'so' ? 'Isticmaalayaasha & Doorka' : 'Users & Roles';
+  String get contentCommunity => languageCode == 'so' ? 'Mawduuca/Bulshada' : 'Content/Community';
+  String get payments => languageCode == 'so' ? 'Lacag-bixinta' : 'Payments';
+  String get disputes => languageCode == 'so' ? 'Khilaafaadka' : 'Disputes';
+  String get settings => languageCode == 'so' ? 'Dejinta' : 'Settings';
+  String get invoices => languageCode == 'so' ? 'Invoisyada' : 'Invoices';
+  String get buyerPayments => languageCode == 'so' ? 'Lacagaha Iibsadaha' : 'Buyer Payments';
+  String get sellerPayouts => languageCode == 'so' ? 'Lacagaha Iibiyaha' : 'Seller Payouts';
+  String get feesCommission => languageCode == 'so' ? 'Kharashka/Dhaqaalaha' : 'Fees/Commission';
+  String get refunds => languageCode == 'so' ? 'Lacag Celin' : 'Refunds';
+  String get incomingPickups => languageCode == 'so' ? 'Qaadista Soo Socota' : 'Incoming Pickups';
+  String get sortingPackaging => languageCode == 'so' ? 'Kala-Saarista/Qaadista' : 'Sorting/Packaging';
+  String get stockLoads => languageCode == 'so' ? 'Kaydka/Boostada' : 'Stock/Loads';
+  String get dispatch => languageCode == 'so' ? 'Dirista' : 'Dispatch';
+  String get impact => languageCode == 'so' ? 'Saameynta' : 'Impact';
+  String get regions => languageCode == 'so' ? 'Gobollada' : 'Regions';
   String get sales => languageCode == 'so' ? 'Iibka' : 'Sales';
   String get downloads => languageCode == 'so' ? 'Soo-dejinta' : 'Downloads';
   String get questions => languageCode == 'so' ? 'Su\'aalaha' : 'Questions';
@@ -243,9 +438,34 @@ class AppTranslations {
   String get weatherAlerts => languageCode == 'so' ? 'Digniino Cimilada' : 'Weather Alerts';
   String get messages => languageCode == 'so' ? 'Farriimaha' : 'Messages';
   String get forgotPassword => languageCode == 'so' ? 'Ma ilaaway furaha sirta ah?' : 'Forgot Password?';
-  String get alreadyHaveAccount => languageCode == 'so' ? 'Ma leedahay akoon hore? ' : 'Already have an account? ';
+  String get forgotPasswordSoon => languageCode == 'so' ? 'Habka furaha sirta ah ee la ilaaway wuxuu imaanayaa dhowaan' : 'Forgot password feature coming soon';
+  String get dontHaveAccount => languageCode == 'so' ? 'Miyaadan lahayn akoon? ' : "Don't have an account? ";
+  String get registerLink => languageCode == 'so' ? 'Is diwaangeli' : 'Register';
+  String get welcomeBackUser => languageCode == 'so' ? 'Ku soo dhawaada mar kale' : 'Welcome back';
   String get welcomeUser => languageCode == 'so' ? 'Ku soo dhawaada' : 'Welcome';
-  
+  String get loginTitle => languageCode == 'so' ? 'Gali' : 'Login';
+  String get welcomeBack => languageCode == 'so' ? 'Ku soo dhawaada' : 'Welcome Back';
+  String get signInToContinue => languageCode == 'so' ? 'Gal si aad u sii wadato' : 'Sign in to continue';
+  String get emailLabel => languageCode == 'so' ? 'Iimayl' : 'Email';
+  String get emailHint => languageCode == 'so' ? 'your@email.com' : 'your@email.com';
+  String get emailError => languageCode == 'so' ? 'Fadlan geli iimaylkaaga' : 'Please enter your email';
+  String get emailInvalid => languageCode == 'so' ? 'Fadlan geli iimayl sax ah' : 'Please enter a valid email';
+  String get passwordLabel => languageCode == 'so' ? 'Furaha sirta ah' : 'Password';
+  String get passwordError => languageCode == 'so' ? 'Fadlan geli furahaaga sirta ah' : 'Please enter your password';
+  String get passwordTooShort => languageCode == 'so' ? 'Furaha sirta ah waa inuu ahaadaa ugu yaraan 6 xaraf' : 'Password must be at least 6 characters';
+  String get createAccount => languageCode == 'so' ? 'Abuur akoonkaaga' : 'Create your account';
+  String get joinAs => languageCode == 'so' ? 'Ku biir sida' : 'Join as a';
+  String get firstName => languageCode == 'so' ? 'Magaca hore' : 'First Name';
+  String get lastName => languageCode == 'so' ? 'Magaca dambe' : 'Last Name';
+  String get phoneNumber => languageCode == 'so' ? 'Lambarka Taleefanka' : 'Phone Number';
+  String get confirmPassword => languageCode == 'so' ? 'Xaqiiji furaha sirta ah' : 'Confirm Password';
+  String get passwordsDoNotMatch => languageCode == 'so' ? 'Furayaasha sirta ah ma isku mid ah' : 'Passwords do not match';
+  String get createAccountBtn => languageCode == 'so' ? 'Abuur Akoon' : 'Create Account';
+  String get termsText => languageCode == 'so' 
+    ? 'Markaad abuurto akoon, waxaad ogolaatay Shuruudaha Adeegga iyo Siyaasadda Khaaska ah.' 
+    : 'By creating an account, you agree to our Terms of Service and Privacy Policy.';
+  String get alreadyHaveAccount => languageCode == 'so' ? 'Ma leedahay akoon hore? ' : 'Already have an account? ';
+
   // Role Selection
   String get joinMarketplace => languageCode == 'so' ? 'Ku biir Suuqa' : 'Join the Marketplace';
   String get roleSelectionSubtitle => languageCode == 'so' 
@@ -294,6 +514,11 @@ class AppTranslations {
   String get sellerStep4Title => languageCode == 'so' ? 'Ku kor si joogto ah' : 'Grow with Consistency';
   String get sellerStep4Desc => languageCode == 'so' ? 'Waxqabadka lagu kalsoonaan karo wuxuu kordhiyaa kalsoonida iibsadaha iyo dalabyada soo noqnoqda.' : 'Reliable performance increases buyer confidence and repeat orders.';
   String get whatBaadiGoobCoordinates => languageCode == 'so' ? 'Waxa BaadiGoob Isku Dubarida' : 'What BaadiGoob Coordinates';
+  String get orderConfirmation => languageCode == 'so' ? 'Xaqiijinta amarka' : 'Order confirmation';
+  String get aggregationPlanning => languageCode == 'so' ? 'Qorshaynta isku-darka' : 'Aggregation planning';
+  String get packingCoordination => languageCode == 'so' ? 'Isku-dubbaridka baakaynta' : 'Packing coordination';
+  String get deliveryScheduling => languageCode == 'so' ? 'Jadwalka keenista' : 'Delivery scheduling';
+  String get customerSupport => languageCode == 'so' ? 'Taageerada macaamiisha' : 'Customer support';
 
   // FAQ
   String get faqTitle => languageCode == 'so' ? 'Su\'aalaha badanaa la is weydiiyo' : 'FAQ';
@@ -311,4 +536,50 @@ class AppTranslations {
   String get faqA6 => languageCode == 'so' ? 'Xulashooyinku waxay ku xidhan yihiin goobta iyo nooca dalabka. Waxaad arki doontaa hababka jira marka aad lacag bixinayso ama inta lagu jiro xaqiijinta.' : 'Options depend on location and order type. You’ll see available methods at checkout or during confirmation.';
   String get faqQ7 => languageCode == 'so' ? 'Sideen ula socdaa dalabkayga?' : 'How do I track my order?';
   String get faqA7 => languageCode == 'so' ? 'Waxaad helaysaa cusboonaysiinta heerka laga bilaabo xaqiijinta ilaa keenista.' : 'You receive status updates from confirmation to delivery.';
-}
+
+  // Shopping & Listing
+  String get shopProduce => languageCode == 'so' ? 'Iibso Dalagga' : 'Shop Produce';
+  String get browseFreshProduce => languageCode == 'so' ? 'Baadh Dalagga Cusub' : 'Browse Fresh Produce';
+  String get browseProduceDesc => languageCode == 'so' ? 'Ka baadh dalagga cusub alaab-qeybiyeyaasha la xaqiijiyay. Qiimaha iyo helitaanka way isbedeli karaan maalin kasta—dalbo si aad u xaqiijiso alaabta iyo jadwalka keenista.' : 'Browse fresh produce from verified suppliers. Prices and availability may change daily—place your order to confirm stock and delivery schedule.';
+  String get searchProducts => languageCode == 'so' ? 'Raadi alaabta...' : 'Search products...';
+  String get featuredCategories => languageCode == 'so' ? 'Qaybaha la xushay' : 'Featured Categories';
+  String get freshArrivals => languageCode == 'so' ? 'Isku-dubarid Cusub' : 'Fresh Arrivals';
+  String get categoryVegetables => languageCode == 'so' ? 'Khudaarta' : 'Vegetables';
+  String get categoryFruits => languageCode == 'so' ? 'Miraha' : 'Fruits';
+  String get categoryGrains => languageCode == 'so' ? 'Macaamiisha' : 'Grains';
+  String get categoryHerbs => languageCode == 'so' ? 'Dhirta' : 'Herbs';
+  String get addToCart => languageCode == 'so' ? 'Ku dar gaadhiga' : 'Add to Cart';
+  String get inStock => languageCode == 'so' ? 'Wuu yaalaa' : 'In Stock';
+  String get limited => languageCode == 'so' ? 'Wuu xadidan yahay' : 'Limited';
+  String get finalConfirmationNote => languageCode == 'so' ? 'Fiiro gaar ah: Xaqiijinta u dambaysa (helitaanka, qiimaha, iyo wakhtiga keenista) waxa la dhamaystiraa ka hor intaan la dirin.' : 'Note: Final confirmation (availability, price, and delivery window) is completed before dispatch.';
+  String get addProduce => languageCode == 'so' ? 'Ku dar Dalagga' : 'Add Produce';
+  String get addProduceDesc => languageCode == 'so' ? 'Abuur liis alaab cusub si iibsadayaashu u helaan dalaggaaga.' : 'Create a new product listing so buyers can find your produce.';
+  String get productName => languageCode == 'so' ? 'Magaca Alaabta' : 'Product Name';
+  String get enterName => languageCode == 'so' ? 'Fadlan geli magaca alaabta' : 'Please enter a product name';
+  String get descriptionOptional => languageCode == 'so' ? 'Faahfaahin (ikhtiyaari)' : 'Description (optional)';
+  String get pricePerUnit => languageCode == 'so' ? 'Qiimaha unugtiiba' : 'Price per unit';
+  String get availableQty => languageCode == 'so' ? 'Tirada la heli karo' : 'Available qty';
+  String get minOrder => languageCode == 'so' ? 'Dalabka ugu yar' : 'Min order';
+  String get gradePlaceholder => languageCode == 'so' ? 'Darajada (A/B/C)' : 'Grade (A/B/C)';
+  String get regionHint => languageCode == 'so' ? 'tusaale, Banaadir' : 'e.g., Banaadir';
+  String get productCreatedSuccess => languageCode == 'so' ? 'Alaabta si guul leh ayaa loo abuuray!' : 'Product created successfully!';
+  String get createListing => languageCode == 'so' ? 'Abuur Liiska' : 'Create Listing';
+  String get sellerLoginError => languageCode == 'so' ? 'Fadlan u gal sidii iibiye si aad ugu darto alaabta.' : 'Please log in as a seller to add products.';
+  String get enterPrice => languageCode == 'so' ? 'Geli qiimaha' : 'Enter price';
+  String get enterValidNumber => languageCode == 'so' ? 'Geli lambar sax ah' : 'Enter a valid number';
+  String get enterQuantity => languageCode == 'so' ? 'Geli tirada' : 'Enter quantity';
+  String get enterMinOrder => languageCode == 'so' ? 'Geli tirada ugu yar ee dalabka' : 'Enter min order qty';
+  String get gradeLabel => languageCode == 'so' ? 'Darajada' : 'Grade';
+
+  // Orders & Status
+  String get myOrders => languageCode == 'so' ? 'Dalabaadkayga' : 'My Orders';
+  String get orderHash => languageCode == 'so' ? 'Dalabka #' : 'Order #';
+  String get totalAmount => languageCode == 'so' ? 'Warta Guud' : 'Total';
+  String get dateLabel => languageCode == 'so' ? 'Taariikhda' : 'Date';
+  String get statusCompleted => languageCode == 'so' ? 'Dhamaystiran' : 'Completed';
+  String get statusDelivered => languageCode == 'so' ? 'La keenay' : 'Delivered';
+  String get statusPending => languageCode == 'so' ? 'Sugid' : 'Pending';
+  String get statusProcessing => languageCode == 'so' ? 'Habaynta' : 'Processing';
+  String get statusInTransit => languageCode == 'so' ? 'Waddada' : 'In Transit';
+  String get statusCancelled => languageCode == 'so' ? 'La joojiyay' : 'Cancelled';
+  String get statusUnknown => languageCode == 'so' ? 'Lama yaqaan' : 'Unknown';
