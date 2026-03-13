@@ -480,6 +480,10 @@ class AppTranslations {
   String get transportersLabel => languageCode == 'so' ? 'Gaadiidleyda' : 'Transporters';
   String get transportersSubtitle => languageCode == 'so' ? 'Hel hawlaha keenista oo hel lacag safarkiiba.' : 'Receive delivery assignments and earn per trip.';
   String get registerAsDriver => languageCode == 'so' ? 'Iska diwaangeli darawal ahaan' : 'Register as Driver';
+  String get fullNameLabel => languageCode == 'so' ? 'Magaca oo buuxa' : 'Full Name';
+  String get enterFirstName => languageCode == 'so' ? 'Fadlan geli magacaaga hore' : 'Please enter your first name';
+  String get enterLastName => languageCode == 'so' ? 'Fadlan geli magacaaga dambe' : 'Please enter your last name';
+  String get enterPhoneNumber => languageCode == 'so' ? 'Fadlan geli lambarkaaga taleefanka' : 'Please enter your phone number';
   String get readOurGuide => languageCode == 'so' ? 'Sidee ayay u shaqaysaa? Akhri Hagahayaga' : 'How it works? Read our Guide';
   String get placeholderText => languageCode == 'so' 
     ? 'Kani waa bog ku meel gaadh ah. Noo fuli bogga dhabta ah markaad diyaar tahay.' 

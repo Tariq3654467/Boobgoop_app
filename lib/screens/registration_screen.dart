@@ -175,7 +175,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${translations.errorLoading} ${translations.firstName.toLowerCase()}';
+                      return translations.enterFirstName;
                     }
                     return null;
                   },
@@ -196,7 +196,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${translations.errorLoading} ${translations.lastName.toLowerCase()}';
+                      return translations.enterLastName;
                     }
                     return null;
                   },
@@ -243,7 +243,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return '${translations.errorLoading} ${translations.phoneNumber.toLowerCase()}';
+                      return translations.enterPhoneNumber;
                     }
                     return null;
                   },
