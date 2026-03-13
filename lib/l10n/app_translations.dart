@@ -635,6 +635,13 @@ class AppTranslations {
   String get opsDashboard => languageCode == 'so' ? 'Xafiiska Hawlgallada' : 'Ops Dashboard';
   String get financeDashboard => languageCode == 'so' ? 'Xafiiska Maaliyadda' : 'Finance Dashboard';
 
+  // Finance / Invoices
+  String get financialInvoices => languageCode == 'so' ? 'Qaansheegadka Maaliyadda' : 'Financial Invoices';
+  String get errorLoadingInvoices => languageCode == 'so' ? 'Cillad ayaa ku timid soo dejinta qaansheegadka' : 'Error loading invoices';
+  String get noInvoicesFound => languageCode == 'so' ? 'Wax qaansheegad ah lama helin.' : 'No invoices found.';
+  String get invoiceHash => languageCode == 'so' ? 'Qaansheegadka #' : 'Invoice #';
+  String get amountLabel => languageCode == 'so' ? 'Cadadka' : 'Amount';
+
   // Filters
   String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
   String get filterLocation => languageCode == 'so' ? 'Goobta' : 'Location';
