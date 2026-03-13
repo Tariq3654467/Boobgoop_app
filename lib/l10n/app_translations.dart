@@ -593,6 +593,18 @@ class AppTranslations {
   String get productLemonLime => languageCode == 'so' ? 'Liinta' : 'Lemon/Lime';
   String get productBanana => languageCode == 'so' ? 'Mooska' : 'Banana';
 
+  // Product Management
+  String get deleteProduct => languageCode == 'so' ? 'Tirtir Alaabta' : 'Delete Product';
+  String get deleteProductConfirm => languageCode == 'so' ? 'Ma hubtaa inaad rabto inaad tirtirto alaabtan? Ficilkan laguma soo celin karo.' : 'Are you sure you want to delete this product? This action cannot be undone.';
+  String get delete => languageCode == 'so' ? 'Tirtir' : 'Delete';
+  String get cancel => languageCode == 'so' ? 'Ka noqo' : 'Cancel';
+  String get productDeletedSuccess => languageCode == 'so' ? 'Alaabta si guul leh ayaa loo tirtiray' : 'Product deleted successfully';
+  String get noProductsYet => languageCode == 'so' ? 'Weli wax alaab ah ma jiraan' : 'No products yet';
+  String get startSellingDesc => languageCode == 'so' ? 'Ku bilow iibinta adigoo ku daraya alaabtaada ugu horreysa!' : 'Start selling by adding your first product!';
+  String get editProduct => languageCode == 'so' ? 'Wax ka badal Alaabta' : 'Edit Product';
+  String get saveChanges => languageCode == 'so' ? 'Keydi Isbedelada' : 'Save Changes';
+  String get requiredField => languageCode == 'so' ? 'Loo baahan yahay' : 'Required';
+
   // Filters
   String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
   String get filterLocation => languageCode == 'so' ? 'Goobta' : 'Location';

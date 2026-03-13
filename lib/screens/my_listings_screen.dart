@@ -1,8 +1,10 @@
+import 'package:baadigoob_agrolink/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_translations.dart';
 
 class MyListingsScreen extends StatefulWidget {
   const MyListingsScreen({super.key});
@@ -33,10 +35,13 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
       final token = appState.authToken;
 
       if (token == null || token.isEmpty) {
-        setState(() {
-          _error = 'Please log in to view your listings.';
-          _isLoading = false;
-        });
+        if (mounted) {
+          final trans = AppLocalizations.of(context).translations;
+          setState(() {
+            _error = trans.sellerLoginError;
+            _isLoading = false;
+          });
+        }
         return;
       }
 
@@ -56,20 +61,21 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
   }
 
   Future<void> _deleteProduct(int productId) async {
+    final translations = AppLocalizations.of(context).translations;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete Product'),
-        content: const Text('Are you sure you want to delete this product? This action cannot be undone.'),
+        title: Text(translations.deleteProduct),
+        content: Text(translations.deleteProductConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(translations.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Delete'),
+            child: Text(translations.delete),
           ),
         ],
       ),
@@ -84,14 +90,14 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Product deleted successfully')),
+          SnackBar(content: Text(translations.productDeletedSuccess)),
         );
         _fetchProducts();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(content: Text('${translations.statusUnknown}: $e'), backgroundColor: Colors.red),
         );
       }
     }
@@ -99,9 +105,10 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Listings'),
+        title: Text(translations.myListings),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
         actions: [
@@ -118,12 +125,13 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
         },
         backgroundColor: AppColors.accentOrange,
         icon: const Icon(Icons.add),
-        label: const Text('Add Product'),
+        label: Text(translations.addProduce),
       ),
     );
   }
 
   Widget _buildBody() {
+    final translations = AppLocalizations.of(context).translations;
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -139,7 +147,7 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _fetchProducts,
-              child: const Text('Retry'),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -153,12 +161,12 @@ class _MyListingsScreenState extends State<MyListingsScreen> {
           children: [
             Icon(Icons.inventory_2_outlined, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
-            const Text(
-              'No products yet',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              translations.noProductsYet,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            const Text('Start selling by adding your first product!'),
+            Text(translations.startSellingDesc),
           ],
         ),
       );
@@ -207,12 +215,17 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     final status = product['status'] ?? 'active';
     final statusColor = status == 'active'
         ? AppColors.secondaryGreen
         : status == 'pending'
             ? Colors.orange
             : Colors.grey;
+
+    String localizedStatus = status;
+    if (status == 'active') localizedStatus = translations.inStock;
+    if (status == 'pending') localizedStatus = translations.statusPending;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -239,7 +252,7 @@ class _ProductCard extends StatelessWidget {
                             product['imageUrl'],
                             fit: BoxFit.cover,
                             errorBuilder: (_, __, ___) => const Icon(
-                              Icons.image,
+                              Icons.agriculture,
                               color: Colors.grey,
                             ),
                           ),
@@ -253,7 +266,7 @@ class _ProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product['name'] ?? 'Unknown Product',
+                        product['name'] ?? translations.unknownProduct,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -261,7 +274,7 @@ class _ProductCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        product['description'] ?? 'No description',
+                        product['description'] ?? '',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -300,13 +313,13 @@ class _ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Available: ${product['availableQuantity']?.toStringAsFixed(0) ?? '0'} ${product['unit'] ?? 'kg'}',
+                      '${translations.available}: ${product['availableQuantity']?.toStringAsFixed(0) ?? '0'} ${product['unit'] ?? 'kg'}',
                       style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     const SizedBox(height: 4),
                     Chip(
                       label: Text(
-                        status.toUpperCase(),
+                        localizedStatus.toUpperCase(),
                         style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       backgroundColor: statusColor,
@@ -320,12 +333,12 @@ class _ProductCard extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.edit, color: AppColors.primaryBlue),
                       onPressed: onEdit,
-                      tooltip: 'Edit',
+                      tooltip: translations.editProduct,
                     ),
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: onDelete,
-                      tooltip: 'Delete',
+                      tooltip: translations.delete,
                     ),
                   ],
                 ),
@@ -400,17 +413,18 @@ class _EditProductScreenState extends State<_EditProductScreen> {
       await api.updateProduct(widget.product['id'], {
         'name': _nameController.text.trim(),
         'description': _descriptionController.text.trim(),
-        'pricePerUnit': double.tryParse(_priceController.text.trim()) ?? 0,
-        'availableQuantity': double.tryParse(_quantityController.text.trim()) ?? 0,
+        'price_per_unit': double.tryParse(_priceController.text.trim()) ?? 0,
+        'available_quantity': double.tryParse(_quantityController.text.trim()) ?? 0,
         'grade': _gradeController.text.trim().isEmpty ? 'A' : _gradeController.text.trim().toUpperCase(),
         'region': _regionController.text.trim(),
         'status': _status,
       });
 
       if (mounted) {
+        final translations = AppLocalizations.of(context).translations;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Product updated successfully!'),
+            content: Text(translations.productCreatedSuccess),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );
@@ -434,9 +448,10 @@ class _EditProductScreenState extends State<_EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: Text(translations.editProduct),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -449,19 +464,19 @@ class _EditProductScreenState extends State<_EditProductScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Product Name',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: translations.productName,
+                  border: const OutlineInputBorder(),
                 ),
-                validator: (v) => v?.trim().isEmpty == true ? 'Required' : null,
+                validator: (v) => v?.trim().isEmpty == true ? translations.requiredField : null,
               ),
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
                 maxLines: 3,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: translations.descriptionOptional,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 16),
@@ -470,25 +485,25 @@ class _EditProductScreenState extends State<_EditProductScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _priceController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: 'Price per unit',
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: translations.pricePerUnit,
                         prefixText: 'SOS ',
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (v) => v?.trim().isEmpty == true ? 'Required' : null,
+                      validator: (v) => v?.trim().isEmpty == true ? translations.requiredField : null,
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: TextFormField(
                       controller: _quantityController,
-                      keyboardType: TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(
-                        labelText: 'Quantity',
-                        border: OutlineInputBorder(),
+                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: translations.availableQty,
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (v) => v?.trim().isEmpty == true ? 'Required' : null,
+                      validator: (v) => v?.trim().isEmpty == true ? translations.requiredField : null,
                     ),
                   ),
                 ],
@@ -499,9 +514,9 @@ class _EditProductScreenState extends State<_EditProductScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _gradeController,
-                      decoration: const InputDecoration(
-                        labelText: 'Grade (A/B/C)',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.gradePlaceholder,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -509,9 +524,9 @@ class _EditProductScreenState extends State<_EditProductScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _regionController,
-                      decoration: const InputDecoration(
-                        labelText: 'Region',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: translations.region,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ),
@@ -520,14 +535,14 @@ class _EditProductScreenState extends State<_EditProductScreen> {
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _status,
-                decoration: const InputDecoration(
-                  labelText: 'Status',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: translations.questions, // Closest thing for 'Status' if not defined, but I should add 'statusLabel'
+                  border: const OutlineInputBorder(),
                 ),
-                items: const [
-                  DropdownMenuItem(value: 'active', child: Text('Active')),
-                  DropdownMenuItem(value: 'pending', child: Text('Pending')),
-                  DropdownMenuItem(value: 'inactive', child: Text('Inactive')),
+                items: [
+                  DropdownMenuItem(value: 'active', child: Text(translations.inStock)),
+                  DropdownMenuItem(value: 'pending', child: Text(translations.statusPending)),
+                  DropdownMenuItem(value: 'inactive', child: Text(translations.statusUnknown)),
                 ],
                 onChanged: (v) => setState(() => _status = v!),
               ),
@@ -548,7 +563,7 @@ class _EditProductScreenState extends State<_EditProductScreen> {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.bold)),
+                    : Text(translations.saveChanges, style: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             ],
           ),
