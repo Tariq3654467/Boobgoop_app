@@ -585,5 +585,16 @@ class AppTranslations {
   String get statusPending => languageCode == 'so' ? 'Sugid' : 'Pending';
   String get statusProcessing => languageCode == 'so' ? 'Habaynta' : 'Processing';
   String get statusInTransit => languageCode == 'so' ? 'Waddada' : 'In Transit';
-  String get statusCancelled => languageCode == 'so' ? 'La joojiyay' : 'Cancelled';
-  String get statusUnknown => languageCode == 'so' ? 'Lama yaqaan' : 'Unknown';
+  // Products
+  String get productTomatoes => languageCode == 'so' ? 'Yaanyada' : 'Tomatoes';
+  String get productMangoes => languageCode == 'so' ? 'Canbaha' : 'Mangoes';
+  String get productPotatoes => languageCode == 'so' ? 'Baradhada' : 'Potatoes';
+  String get productWatermelon => languageCode == 'so' ? 'Xabxabka' : 'Watermelon';
+  String get productLemonLime => languageCode == 'so' ? 'Liinta' : 'Lemon/Lime';
+  String get productBanana => languageCode == 'so' ? 'Mooska' : 'Banana';
+
+  // Filters
+  String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
+  String get filterLocation => languageCode == 'so' ? 'Goobta' : 'Location';
+  String get filterPrice => languageCode == 'so' ? 'Qiimaha' : 'Price';
+  String get filterAvailability => languageCode == 'so' ? 'Helitaanka' : 'Availability';

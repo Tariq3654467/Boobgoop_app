@@ -32,7 +32,7 @@ class ShopProduceScreen extends StatelessWidget {
             // Search & Filter Bar (Visual Placeholder)
             _searchBar(translations),
             const SizedBox(height: 16),
-            _filterChips(),
+            _filterChips(translations),
             const SizedBox(height: 24),
             
             SectionHeader(title: translations.featuredCategories),
@@ -40,12 +40,12 @@ class ShopProduceScreen extends StatelessWidget {
             const SizedBox(height: 32),
             
             SectionHeader(title: translations.freshArrivals),
-            _productItem('Tomatoes', 'Standard', '10kg', translations.inStock, 'assets/images/tomatoes.png', translations),
-            _productItem('Mangoes', 'Premium', '5kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
-            _productItem('Potatoes', 'Standard', '50kg', translations.inStock, 'assets/images/yellow_maize.png', translations),
-            _productItem('Watermelon', 'Premium', '20kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
-            _productItem('Lemon/Lime', 'Standard', '5kg', translations.inStock, 'assets/images/vegetables.png', translations),
-            _productItem('Banana', 'Standard', '20kg', translations.inStock, 'assets/images/Fresh_banana_gradeA.png', translations),
+            _productItem(translations.productTomatoes, 'Standard', '10kg', translations.inStock, 'assets/images/tomatoes.png', translations),
+            _productItem(translations.productMangoes, 'Premium', '5kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
+            _productItem(translations.productPotatoes, 'Standard', '50kg', translations.inStock, 'assets/images/yellow_maize.png', translations),
+            _productItem(translations.productWatermelon, 'Premium', '20kg', translations.limited, 'assets/images/fresh-produce.jpg', translations),
+            _productItem(translations.productLemonLime, 'Standard', '5kg', translations.inStock, 'assets/images/vegetables.png', translations),
+            _productItem(translations.productBanana, 'Standard', '20kg', translations.inStock, 'assets/images/Fresh_banana_gradeA.png', translations),
             
             const SizedBox(height: 24),
             Text(
@@ -69,8 +69,13 @@ class ShopProduceScreen extends StatelessWidget {
     );
   }
 
-  Widget _filterChips() {
-    final filters = ['Category', 'Location', 'Price', 'Availability'];
+  Widget _filterChips(AppTranslations translations) {
+    final filters = [
+      translations.filterCategory,
+      translations.filterLocation,
+      translations.filterPrice,
+      translations.filterAvailability
+    ];
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
