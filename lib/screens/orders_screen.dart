@@ -38,7 +38,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
       });
     }
   }
-
+  @override
+  Widget build(BuildContext context) {
     final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(

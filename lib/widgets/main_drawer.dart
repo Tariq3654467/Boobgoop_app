@@ -752,7 +752,7 @@ class MainDrawer extends StatelessWidget {
           }),
           _DrawerMenuItem(
             Icons.info,
-            translations.aboutUs,
+            translations.aboutBaadigoob,
             () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const AboutScreen()),
