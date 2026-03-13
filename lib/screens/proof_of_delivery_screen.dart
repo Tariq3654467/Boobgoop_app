@@ -1,3 +1,4 @@
+import 'package:baadigoob_agrolink/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
@@ -11,9 +12,10 @@ class ProofOfDeliveryScreen extends StatefulWidget {
 class _ProofOfDeliveryScreenState extends State<ProofOfDeliveryScreen> {
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Proof of Delivery'),
+        title: Text(translations.pod),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
       ),
@@ -25,17 +27,17 @@ class _ProofOfDeliveryScreenState extends State<ProofOfDeliveryScreen> {
             children: [
               Icon(Icons.camera_alt, size: 80, color: Colors.grey[400]),
               const SizedBox(height: 16),
-              const Text(
-                'Upload delivery photo or signature to complete a delivery record.',
+              Text(
+                translations.uploadPODDesc,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               ElevatedButton.icon(
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Camera integration pending')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(translations.cameraPending)));
                 },
                 icon: const Icon(Icons.add_a_photo),
-                label: const Text('Capture POD'),
+                label: Text(translations.capturePOD),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue,
                   foregroundColor: Colors.white,

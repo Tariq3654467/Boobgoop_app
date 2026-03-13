@@ -622,6 +622,9 @@ class AppTranslations {
   String get noActiveDeliveries => languageCode == 'so' ? 'Ma jiraan gaadiid hadda socda' : 'No active deliveries';
   String get noCompletedDeliveries => languageCode == 'so' ? 'Ma jiraan gaadiid dhammaaday' : 'No completed deliveries';
   String get deliveryStatusUpdated => languageCode == 'so' ? 'Xaaladda gaadiidka waa la cusboonaysiiyey' : 'Delivery status updated';
+  String get uploadPODDesc => languageCode == 'so' ? 'Soo rari sawirka gaarsiinta ama saxiixa si loo dhamaystiro diiwaanka dhalmada.' : 'Upload delivery photo or signature to complete a delivery record.';
+  String get capturePOD => languageCode == 'so' ? 'Qabo Caddaynta (POD)' : 'Capture POD';
+  String get cameraPending => languageCode == 'so' ? 'Isku xidhka kamaradu weli ma diyaar garoobin' : 'Camera integration pending';
 
   // Filters
   String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
