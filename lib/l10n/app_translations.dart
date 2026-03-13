@@ -605,6 +605,24 @@ class AppTranslations {
   String get saveChanges => languageCode == 'so' ? 'Keydi Isbedelada' : 'Save Changes';
   String get requiredField => languageCode == 'so' ? 'Loo baahan yahay' : 'Required';
 
+  // Logistics / Deliveries
+  String get myDeliveries => languageCode == 'so' ? 'Gaadiidkayga' : 'My Deliveries';
+  String get tabPending => languageCode == 'so' ? 'Sugaya' : 'Pending';
+  String get tabActive => languageCode == 'so' ? 'Hadda socda' : 'Active';
+  String get tabCompleted => languageCode == 'so' ? 'Dhammaaday' : 'Completed';
+  String get decline => languageCode == 'so' ? 'Diid' : 'Decline';
+  String get accept => languageCode == 'so' ? 'Oggolow' : 'Accept';
+  String get markPickedUp => languageCode == 'so' ? 'Calaamadee in la soo qaaday' : 'Mark Picked Up';
+  String get markDelivered => languageCode == 'so' ? 'Calaamadee in la geeyey' : 'Mark Delivered';
+  String get proofOfDeliverySubmitted => languageCode == 'so' ? 'Caddaynta dhalmada waa la gudbiyey' : 'Proof of delivery submitted';
+  String get viewProof => languageCode == 'so' ? 'Fiiri Caddaynta' : 'View Proof';
+  String get pickupLabel => languageCode == 'so' ? 'Goobta laga soo qaadayo' : 'Pickup';
+  String get deliveryLabel => languageCode == 'so' ? 'Goobta la gaynayo' : 'Delivery';
+  String get noPendingDeliveries => languageCode == 'so' ? 'Ma jiraan gaadiid sugaya' : 'No pending deliveries';
+  String get noActiveDeliveries => languageCode == 'so' ? 'Ma jiraan gaadiid hadda socda' : 'No active deliveries';
+  String get noCompletedDeliveries => languageCode == 'so' ? 'Ma jiraan gaadiid dhammaaday' : 'No completed deliveries';
+  String get deliveryStatusUpdated => languageCode == 'so' ? 'Xaaladda gaadiidka waa la cusboonaysiiyey' : 'Delivery status updated';
+
   // Filters
   String get filterCategory => languageCode == 'so' ? 'Qaybta' : 'Category';
   String get filterLocation => languageCode == 'so' ? 'Goobta' : 'Location';

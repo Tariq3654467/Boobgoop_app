@@ -1,8 +1,10 @@
+import 'package:baadigoob_agrolink/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
+import '../l10n/app_translations.dart';
 
 class DeliveriesScreen extends StatefulWidget {
   const DeliveriesScreen({super.key});
@@ -43,10 +45,13 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
       final token = appState.authToken;
 
       if (token == null || token.isEmpty) {
-        setState(() {
-          _error = 'Please log in to view deliveries.';
-          _isLoading = false;
-        });
+        if (mounted) {
+          final trans = AppLocalizations.of(context).translations;
+          setState(() {
+            _error = trans.sellerLoginError;
+            _isLoading = false;
+          });
+        }
         return;
       }
 
@@ -71,14 +76,17 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
         });
       }
     } catch (e) {
-      setState(() {
-        _error = e.toString();
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
     }
   }
 
   Future<void> _updateDeliveryStatus(int deliveryId, String newStatus) async {
+    final translations = AppLocalizations.of(context).translations;
     try {
       final appState = context.read<AppState>();
       final api = ApiService(authToken: appState.authToken);
@@ -88,7 +96,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Delivery status updated to $newStatus'),
+            content: Text('${translations.deliveryStatusUpdated}: $newStatus'),
             backgroundColor: AppColors.secondaryGreen,
           ),
         );
@@ -105,18 +113,19 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Deliveries'),
+        title: Text(translations.myDeliveries),
         backgroundColor: AppColors.primaryBlue,
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
           tabs: [
-            Tab(text: 'Pending (${_pendingDeliveries.length})'),
-            Tab(text: 'Active (${_activeDeliveries.length})'),
-            Tab(text: 'Completed (${_completedDeliveries.length})'),
+            Tab(text: '${translations.tabPending} (${_pendingDeliveries.length})'),
+            Tab(text: '${translations.tabActive} (${_activeDeliveries.length})'),
+            Tab(text: '${translations.tabCompleted} (${_completedDeliveries.length})'),
           ],
         ),
         actions: [
@@ -131,6 +140,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
   }
 
   Widget _buildBody() {
+    final translations = AppLocalizations.of(context).translations;
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -146,7 +156,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _fetchDeliveries,
-              child: const Text('Retry'),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -164,7 +174,13 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
   }
 
   Widget _buildDeliveryList(List<dynamic> deliveries, String type) {
+    final translations = AppLocalizations.of(context).translations;
     if (deliveries.isEmpty) {
+      String noDataText = '';
+      if (type == 'pending') noDataText = translations.noPendingDeliveries;
+      else if (type == 'active') noDataText = translations.noActiveDeliveries;
+      else noDataText = translations.noCompletedDeliveries;
+
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -177,8 +193,7 @@ class _DeliveriesScreenState extends State<DeliveriesScreen> with SingleTickerPr
             ),
             const SizedBox(height: 16),
             Text(
-              type == 'pending' ? 'No pending deliveries' :
-              type == 'active' ? 'No active deliveries' : 'No completed deliveries',
+              noDataText,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
@@ -237,8 +252,14 @@ class _DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final translations = AppLocalizations.of(context).translations;
     final order = delivery['order'] ?? {};
     final status = delivery['status'] ?? 'assigned';
+
+    String localizedStatus = status;
+    if (status == 'assigned') localizedStatus = translations.statusPending;
+    if (status == 'delivered') localizedStatus = translations.statusDelivered;
+    if (status == 'completed') localizedStatus = translations.statusCompleted;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -255,7 +276,7 @@ class _DeliveryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Order #${order['orderNumber']?.toString().substring(0, 8) ?? delivery['id']}',
+                      '${translations.orderHash}${order['orderNumber']?.toString().substring(0, 8) ?? delivery['id']}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -273,7 +294,7 @@ class _DeliveryCard extends StatelessWidget {
                 ),
                 Chip(
                   label: Text(
-                    status.toUpperCase().replaceAll('_', ' '),
+                    localizedStatus.toUpperCase().replaceAll('_', ' '),
                     style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -289,7 +310,7 @@ class _DeliveryCard extends StatelessWidget {
             if (delivery['pickupAddress'] != null) ...[
               _InfoRow(
                 icon: Icons.location_on,
-                label: 'Pickup',
+                label: translations.pickupLabel,
                 value: delivery['pickupAddress'],
               ),
               const SizedBox(height: 8),
@@ -297,7 +318,7 @@ class _DeliveryCard extends StatelessWidget {
             if (delivery['deliveryAddress'] != null) ...[
               _InfoRow(
                 icon: Icons.flag,
-                label: 'Delivery',
+                label: translations.deliveryLabel,
                 value: delivery['deliveryAddress'],
               ),
               const SizedBox(height: 8),
@@ -305,7 +326,7 @@ class _DeliveryCard extends StatelessWidget {
             if (delivery['deliveryRegion'] != null)
               _InfoRow(
                 icon: Icons.map,
-                label: 'Region',
+                label: translations.region,
                 value: delivery['deliveryRegion'],
               ),
             // Action buttons based on status
@@ -317,7 +338,7 @@ class _DeliveryCard extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: () => onStatusUpdate(delivery['id'], 'cancelled'),
                       style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-                      child: const Text('Decline'),
+                      child: Text(translations.decline),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -327,7 +348,7 @@ class _DeliveryCard extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondaryGreen,
                       ),
-                      child: const Text('Accept'),
+                      child: Text(translations.accept),
                     ),
                   ),
                 ],
@@ -344,7 +365,7 @@ class _DeliveryCard extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.purple,
                         ),
-                        child: const Text('Mark Picked Up'),
+                        child: Text(translations.markPickedUp),
                       ),
                     ),
                   if (status == 'picked_up' || status == 'in_transit')
@@ -354,7 +375,7 @@ class _DeliveryCard extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGreen,
                         ),
-                        child: const Text('Mark Delivered'),
+                        child: Text(translations.markDelivered),
                       ),
                     ),
                 ],
@@ -364,9 +385,9 @@ class _DeliveryCard extends StatelessWidget {
               const SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.check_circle, color: AppColors.secondaryGreen, size: 16),
+                   Icon(Icons.check_circle, color: AppColors.secondaryGreen, size: 16),
                   const SizedBox(width: 8),
-                  Text('Proof of delivery submitted'),
+                  Text(translations.proofOfDeliverySubmitted),
                   const Spacer(),
                   TextButton(
                     onPressed: () {
@@ -374,7 +395,7 @@ class _DeliveryCard extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: const Text('Proof of Delivery'),
+                          title: Text(translations.viewProof),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -390,13 +411,13 @@ class _DeliveryCard extends StatelessWidget {
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
+                              child: Text(translations.cancel),
                             ),
                           ],
                         ),
                       );
                     },
-                    child: const Text('View'),
+                    child: Text(translations.viewProof),
                   ),
                 ],
               ),
@@ -436,4 +457,3 @@ class _InfoRow extends StatelessWidget {
     );
   }
 }
-
