@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 import '../l10n/app_localizations.dart';
@@ -243,12 +246,11 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                     child: TextFormField(
                       controller: _gradeController,
                       textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: translations.gradePlaceholder,
-                  border: const OutlineInputBorder(),
-                  hintText: 'A',
-                ),
-      ),
+                      decoration: InputDecoration(
+                        labelText: translations.gradePlaceholder,
+                        border: const OutlineInputBorder(),
+                        hintText: 'A',
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -256,12 +258,11 @@ class _AddProduceScreenState extends State<AddProduceScreen> {
                     child: TextFormField(
                       controller: _regionController,
                       textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: translations.region,
-                  border: const OutlineInputBorder(),
-                  hintText: translations.regionHint,
-                ),
-      ),
+                      decoration: InputDecoration(
+                        labelText: translations.region,
+                        border: const OutlineInputBorder(),
+                        hintText: translations.regionHint,
+                      ),
                     ),
                   ),
                 ],

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../models/app_state.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

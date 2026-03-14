@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/common_ui.dart';
 import '../theme/app_colors.dart';
 import '../widgets/main_drawer.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/app_translations.dart';
+import '../models/app_state.dart';
 
 class ShopProduceScreen extends StatelessWidget {
   const ShopProduceScreen({super.key});

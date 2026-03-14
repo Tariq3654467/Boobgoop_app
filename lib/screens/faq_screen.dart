@@ -1,6 +1,7 @@
-import '../widgets/common_ui.dart';
-import '../theme/app_colors.dart';
+import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../theme/app_colors.dart';
+import '../widgets/common_ui.dart';
 
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});

@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/app_state.dart';
 import '../services/api_service.dart';
 import '../theme/app_colors.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/app_translations.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -52,6 +55,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Widget _buildBody() {
+    final translations = AppLocalizations.of(context).translations;
     if (_isLoading) return const Center(child: CircularProgressIndicator());
 
     if (_error != null) {
@@ -62,7 +66,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
             Text(
-              AppLocalizations.of(context).translations.errorLoading,
+              translations.errorLoading,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             Padding(
@@ -81,7 +85,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 });
                 _fetchOrders();
               },
-              child: Text(AppLocalizations.of(context).translations.retry),
+              child: Text(translations.retry),
             ),
           ],
         ),
@@ -89,7 +93,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     }
 
     if (_orders.isEmpty) {
-      return Center(child: Text(AppLocalizations.of(context).translations.noData));
+      return Center(child: Text(translations.noData));
     }
 
     return ListView.builder(
