@@ -39,8 +39,8 @@ class ContactScreen extends StatelessWidget {
             _contactItem(
               Icons.email,
               translations.email,
-              'info@baadigoobagrolink.com',
-              url: 'mailto:info@baadigoobagrolink.com',
+              'info@baadigoob.so',
+              url: 'mailto:info@baadigoob.so',
             ),
             _contactItem(
               Icons.phone,
@@ -57,17 +57,30 @@ class ContactScreen extends StatelessWidget {
             _contactItem(
               Icons.location_on,
               translations.location,
-              'KM5, Hodan District, Mogadishu, Somalia',
+              '1st Floor, Hano Connect, TikTok Street, KM5, Hodan District, Mogadishu, Somalia',
             ),
 
             SectionHeader(title: translations.socialMedia),
             Text(translations.followUs),
             Text(
-              '#baadigoobagrolink',
+              '@baadigoobonline',
               style: TextStyle(
                 color: AppColors.primaryBlue,
                 fontWeight: FontWeight.bold,
               ),
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                _socialMediaIcon(Icons.facebook, 'Facebook', 'https://facebook.com/baadigoobonline'),
+                _socialMediaIcon(Icons.camera_alt, 'Instagram', 'https://instagram.com/baadigoobonline'),
+                _socialMediaIcon(Icons.chat, 'Twitter', 'https://twitter.com/baadigoobonline'),
+                _socialMediaIcon(Icons.business, 'LinkedIn', 'https://linkedin.com/company/baadigoob'),
+                _socialMediaIcon(Icons.play_circle_fill, 'YouTube', 'https://youtube.com/baadigoobonline'),
+                _socialMediaIcon(Icons.music_note, 'TikTok', 'https://tiktok.com/@baadigoobonline'),
+              ],
             ),
 
             const SizedBox(height: 48),
@@ -134,6 +147,21 @@ class ContactScreen extends StatelessWidget {
               Icon(Icons.open_in_new, color: AppColors.primaryBlue, size: 18),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _socialMediaIcon(IconData icon, String platform, String url) {
+    return InkWell(
+      onTap: () => _launchUrl(url),
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppColors.primaryBlue.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: AppColors.primaryBlue, size: 24),
       ),
     );
   }

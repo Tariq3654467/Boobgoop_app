@@ -10,7 +10,7 @@ class AppTranslations {
   String get marketPrices => languageCode == 'so' ? 'Qiimaha Suuqa' : 'Market Prices';
   String get weather => languageCode == 'so' ? 'Cimilada' : 'Weather';
   String get marketplace => languageCode == 'so' ? 'Suuqa' : 'Marketplace';
-  String get community => languageCode == 'so' ? 'Bulshada' : 'Community';
+  String get community => languageCode == 'so' ? 'Abuurka & Daryeelka Dalagga' : 'Seeds & Crop Care';
   String get login => languageCode == 'so' ? 'Gal' : 'Login';
   String get logout => languageCode == 'so' ? 'Ka Bax' : 'Logout';
   String get profile => languageCode == 'so' ? 'Profile' : 'Profile';
@@ -94,7 +94,7 @@ class AppTranslations {
   String get communityDesc => languageCode == 'so'
     ? 'Kor u qaad aqoontaada oo ku xidh shabakad taageero leh oo beeraley iyo khubuuro ah.'
     : 'Grow your knowledge and connect with a supportive network of farmers and experts.';
-  String get communityForum => languageCode == 'so' ? 'Madasha Bulshada' : 'Community Forum';
+  String get communityForum => languageCode == 'so' ? 'Abuurka & Daryeelka Dalagga' : 'Seeds & Crop Care';
   String get communityForumDesc => languageCode == 'so'
     ? 'Su\'aalo weydii, khibrado la wadaag, oo ka jawaab hel beeraleyda kale iyo khuburada beeraha.'
     : 'Ask questions, share experiences, and get answers from fellow farmers and agricultural experts.';
@@ -209,7 +209,7 @@ class AppTranslations {
   String get myListings => languageCode == 'so' ? 'Liiska Iibka' : 'My Listings';
   String get orders => languageCode == 'so' ? 'Dalabaadka' : 'Orders';
   String get weatherTitle => languageCode == 'so' ? 'Cimilada' : 'Weather';
-  String get communityTitle => languageCode == 'so' ? 'Bulshada' : 'Community';
+  String get communityTitle => languageCode == 'so' ? 'Abuurka & Daryeelka Dalagga' : 'Seeds & Crop Care';
   String get support => languageCode == 'so' ? 'Taageero' : 'Support';
   String get dashboard => languageCode == 'so' ? 'Dashboard' : 'Dashboard';
   String get farmers => languageCode == 'so' ? 'Beeralayda' : 'Farmers';
@@ -222,7 +222,8 @@ class AppTranslations {
   String get pod => languageCode == 'so' ? 'Caddaynta Gaarsiinta' : 'Proof of Delivery';
   String get earnings => languageCode == 'so' ? 'Dakhliga' : 'Earnings';
   String get usersRoles => languageCode == 'so' ? 'Isticmaalayaasha & Doorka' : 'Users & Roles';
-  String get contentCommunity => languageCode == 'so' ? 'Mawduuca/Bulshada' : 'Content/Community';
+  String get products => languageCode == 'so' ? 'Alaabta' : 'Products';
+  String get contentCommunity => languageCode == 'so' ? 'Mawduuca/Abuurka & Daryeelka Dalagga' : 'Content/Seeds & Crop Care';
   String get payments => languageCode == 'so' ? 'Lacag-bixinta' : 'Payments';
   String get disputes => languageCode == 'so' ? 'Khilaafaadka' : 'Disputes';
   String get settings => languageCode == 'so' ? 'Dejinta' : 'Settings';
@@ -310,6 +311,7 @@ class AppTranslations {
   String get categoryFruits => languageCode == 'so' ? 'Miraha' : 'Fruits';
   String get categoryGrains => languageCode == 'so' ? 'Macaamiisha' : 'Grains';
   String get categoryHerbs => languageCode == 'so' ? 'Dhirta' : 'Herbs';
+  String get categoryAgriInputs => languageCode == 'so' ? 'Abuurka & Daryeelka Dalagga' : 'Seeds & Crop Care';
   String get addToCart => languageCode == 'so' ? 'Ku dar gaadhiga' : 'Add to Cart';
   String get inStock => languageCode == 'so' ? 'Wuu yaalaa' : 'In Stock';
   String get limited => languageCode == 'so' ? 'Wuu xadidan yahay' : 'Limited';
@@ -337,11 +339,16 @@ class AppTranslations {
   String get orderHash => languageCode == 'so' ? 'Dalabka #' : 'Order #';
   String get totalAmount => languageCode == 'so' ? 'Warta Guud' : 'Total';
   String get dateLabel => languageCode == 'so' ? 'Taariikhda' : 'Date';
+  String get itemsLabel => languageCode == 'so' ? 'Alaabada' : 'Items';
   String get statusCompleted => languageCode == 'so' ? 'Dhamaystiran' : 'Completed';
   String get statusDelivered => languageCode == 'so' ? 'La keenay' : 'Delivered';
   String get statusPending => languageCode == 'so' ? 'Sugid' : 'Pending';
   String get statusProcessing => languageCode == 'so' ? 'Habaynta' : 'Processing';
   String get statusInTransit => languageCode == 'so' ? 'Waddada' : 'In Transit';
+  String get statusConfirmed => languageCode == 'so' ? 'La xaqiijiyey' : 'Confirmed';
+  String get statusPacked => languageCode == 'so' ? 'La xirxiray' : 'Packed';
+  String get statusShipped => languageCode == 'so' ? 'La diray' : 'Shipped';
+  String get statusCancelled => languageCode == 'so' ? 'La joojiyey' : 'Cancelled';
 
   // Products (Crop Names)
   String get productTomatoes => languageCode == 'so' ? 'Yaanyada' : 'Tomatoes';
@@ -350,6 +357,34 @@ class AppTranslations {
   String get productWatermelon => languageCode == 'so' ? 'Xabxabka' : 'Watermelon';
   String get productLemonLime => languageCode == 'so' ? 'Liinta' : 'Lemon/Lime';
   String get productBanana => languageCode == 'so' ? 'Mooska' : 'Banana';
+  String get productSalad => languageCode == 'so' ? 'Salad/Kamsal' : 'Salad/Kamsal';
+  String get productSweetPotatoes => languageCode == 'so' ? 'Baradho Macaan' : 'Sweet Potatoes';
+  String get productYellowPumpkin => languageCode == 'so' ? 'Bocor Jaale' : 'Yellow Pumpkin';
+  String get productWhitePumpkin => languageCode == 'so' ? 'Bocor Cad' : 'White pumpkin';
+  String get productGrapefruit => languageCode == 'so' ? 'Banbeelmo' : 'Grapefruit';
+  String get productPlumTomato => languageCode == 'so' ? 'Yaanyo Yar' : 'Plum Tomato';
+  String get productWhiteRadish => languageCode == 'so' ? 'Isbinaaj Baqal' : 'White Radish';
+  String get productGreenPepper => languageCode == 'so' ? 'Barabaro' : 'Green Pepper';
+  String get productCarrot => languageCode == 'so' ? 'Dabacasaha' : 'Carrot';
+  String get productZippa => languageCode == 'so' ? 'Basbaas' : 'Zippa/Green Chilies';
+  String get productCucumber => languageCode == 'so' ? 'Qajaar' : 'Cucumber';
+  String get productCoriander => languageCode == 'so' ? 'Caleen Khidaar' : 'Coriander/Huru';
+  String get productCabbage => languageCode == 'so' ? 'Kaabaj' : 'Cabbage';
+  String get productSpinach => languageCode == 'so' ? 'Isbinaaj' : 'Spinach';
+  String get productCoconut => languageCode == 'so' ? 'Qunbey' : 'Coconut';
+  String get productPapaya => languageCode == 'so' ? 'Babbaay' : 'Papaya';
+  String get productBeetroot => languageCode == 'so' ? 'Beetroot' : 'Beetroot';
+  String get productOkra => languageCode == 'so' ? 'Baamiyo' : 'Okra';
+  String get productCantaloupe => languageCode == 'so' ? 'Qare/Bocor' : 'Cantaloupe';
+
+  // Agricultural Inputs
+  String get productMaizeSeeds => languageCode == 'so' ? 'Abuurka Galleyda' : 'Maize Seeds';
+  String get productWheatSeeds => languageCode == 'so' ? 'Abuurka Sarreenka' : 'Wheat Seeds';
+  String get productRiceSeeds => languageCode == 'so' ? 'Abuurka Bariiska' : 'Rice Seeds';
+  String get productFertilizerNPK => languageCode == 'so' ? 'Bacriminta NPK' : 'NPK Fertilizer';
+  String get productPesticide => languageCode == 'so' ? 'Dawaynta Cayayaanka' : 'Pesticide';
+  String get productHerbicide => languageCode == 'so' ? 'Dawaynta Doogga' : 'Herbicide';
+  String get productFungicide => languageCode == 'so' ? 'Dawaynta Fungi' : 'Fungicide';
 
   // Product Management
   String get deleteProduct => languageCode == 'so' ? 'Tirtir Alaabta' : 'Delete Product';
@@ -388,6 +423,13 @@ class AppTranslations {
   String get adminDashboard => languageCode == 'so' ? 'Xafiiska Maamulka' : 'Admin Dashboard';
   String get systemOverview => languageCode == 'so' ? 'Guud ahaan Nidaamka' : 'System Overview';
   String get welcomeAdmin => languageCode == 'so' ? 'Ku soo dhawaada Xafiiska Maamulka.' : 'Welcome to the BaadiGoob Admin Panel.';
+  String get manageDailyPrices => languageCode == 'so' ? 'Maamul qiimaha maalinlaha ah' : 'Manage daily market prices';
+  String get viewPrices => languageCode == 'so' ? 'Eeg Qiimaha' : 'View Prices';
+  String get updatePrices => languageCode == 'so' ? 'Cusboonaysii Qiimaha' : 'Update Prices';
+  String get manageUsers => languageCode == 'so' ? 'Maamul isticmaalayaasha' : 'Manage users and roles';
+  String get viewUsers => languageCode == 'so' ? 'Eeg Isticmaalayaasha' : 'View Users';
+  String get manageProducts => languageCode == 'so' ? 'Maamul alaabta' : 'Manage products and inventory';
+  String get addProduct => languageCode == 'so' ? 'Ku dar Alaab' : 'Add Product';
   String get partnerDashboard => languageCode == 'so' ? 'Xafiiska lammaanaha' : 'Partner Dashboard';
   String get hubDashboard => languageCode == 'so' ? 'Xafiiska Hub-ka' : 'Hub Dashboard';
   String get opsDashboard => languageCode == 'so' ? 'Xafiiska Hawlgallada' : 'Ops Dashboard';
@@ -410,7 +452,6 @@ class AppTranslations {
   String get unit => languageCode == 'so' ? 'Unugga' : 'Unit';
   String get region => languageCode == 'so' ? 'Gobolka' : 'Region';
   String get statusUnknown => languageCode == 'so' ? 'Lama yaqaan' : 'Unknown';
-  String get statusCancelled => languageCode == 'so' ? 'La baajiyay' : 'Cancelled';
 
   // FAQ Details
   String get faqQ1 => languageCode == 'so' ? 'Sideen u iibsan karaa alaabta?' : 'How do I buy produce?';

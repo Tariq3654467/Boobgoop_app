@@ -72,6 +72,43 @@ flutter:
     - assets/images/vegetables.png
     - assets/images/fruits.png
     - assets/images/market.png
+    - assets/images/banana.png
+    - assets/images/Fresh_banana_gradeA.png
+    - assets/images/betroot.png
+    - assets/images/cabbage.png
+    - assets/images/cantloupe.png
+    - assets/images/carrot.png
+    - assets/images/cocunut.png
+    - assets/images/cowpeas.png
+    - assets/images/cucumber.png
+    - assets/images/fresh_corender.png
+    - assets/images/fresh_organic_sorghum.png
+    - assets/images/grape_fruit.png
+    - assets/images/green_pepper.png
+    - assets/images/lattuce_bagal.png
+    - assets/images/lemon.png
+    - assets/images/mangoes.png
+    - assets/images/okra.png
+    - assets/images/papaya.png
+    - assets/images/pepper.png
+    - assets/images/plum_tomato.png
+    - assets/images/premium_sesum_seeds.png
+    - assets/images/salad.png
+    - assets/images/spinch.png
+    - assets/images/sweet_potatoes.png
+    - assets/images/tomato.png
+    - assets/images/tomatoes.png
+    - assets/images/watermelon.png
+    - assets/images/white_pumpkin.png
+    - assets/images/yellow_maize.png
+    - assets/images/yellow_pumpkin.png
+    - assets/images/farmer1.png
+    - assets/images/farmer2.png
+    - assets/images/farmer3.png
+    - assets/images/farmer-portrait-1.jpg
+    - assets/images/farmer-portrait-2.jpg
+    - assets/images/farmer-portrait-3.jpg
+    - assets/images/somali_womens.png
     - assets/logo/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

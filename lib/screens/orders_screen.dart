@@ -138,6 +138,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 8),
+                // Order Progress Indicator
+                _buildOrderProgress(order['status']),
                 const SizedBox(height: 12),
                 Text(
                   '${translations.totalAmount}: SOS ${order['total'] ?? '0.00'}',
@@ -148,11 +151,50 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   '${translations.dateLabel}: ${order['createdAt'] != null ? DateTime.parse(order['createdAt']).toString().split(' ')[0] : translations.statusUnknown}',
                   style: TextStyle(color: Colors.grey[600], fontSize: 12),
                 ),
+                if (order['items'] != null && (order['items'] as List).isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    '${translations.itemsLabel}: ${(order['items'] as List).length}',
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                  ),
+                ],
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Widget _buildOrderProgress(String? status) {
+    final steps = ['confirmed', 'processing', 'packed', 'shipped', 'delivered'];
+    final currentIndex = steps.indexOf(status?.toLowerCase() ?? '');
+    final progressValue = currentIndex >= 0 ? (currentIndex + 1) / steps.length : 0.0;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LinearProgressIndicator(
+          value: progressValue,
+          backgroundColor: Colors.grey[300],
+          valueColor: AlwaysStoppedAnimation<Color>(_getStatusColor(status)),
+        ),
+        const SizedBox(height: 4),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: steps.map((step) {
+            final isCompleted = steps.indexOf(step) <= currentIndex;
+            return Text(
+              _getStatusLabel(step, AppLocalizations.of(context).translations),
+              style: TextStyle(
+                fontSize: 10,
+                color: isCompleted ? _getStatusColor(status) : Colors.grey,
+                fontWeight: isCompleted ? FontWeight.bold : FontWeight.normal,
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
@@ -168,6 +210,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
         return translations.statusProcessing;
       case 'in_transit':
         return translations.statusInTransit;
+      case 'confirmed':
+        return translations.statusConfirmed;
+      case 'packed':
+        return translations.statusPacked;
+      case 'shipped':
+        return translations.statusShipped;
       case 'cancelled':
         return translations.statusCancelled;
       default:
@@ -181,9 +229,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
       case 'delivered':
         return Colors.green;
       case 'pending':
+      case 'confirmed':
         return AppColors.accentOrange;
       case 'processing':
+      case 'packed':
       case 'in_transit':
+      case 'shipped':
         return Colors.blue;
       case 'cancelled':
         return Colors.red;

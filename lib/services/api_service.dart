@@ -75,6 +75,21 @@ class ApiService {
     }
   }
 
+  /// Fetches live product listings from Supabase
+  Future<List<dynamic>> getProducts() async {
+    try {
+      final response = await _supabase
+          .from('products')
+          .select('*, profiles(first_name, last_name, phone, region)')
+          .order('created_at', ascending: false)
+          .limit(100);
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching products: $e');
+      return [];
+    }
+  }
+
   /// Fetches community forum posts
   Future<List<dynamic>> getCommunityPosts() async {
     try {
