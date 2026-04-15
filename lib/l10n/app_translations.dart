@@ -201,6 +201,8 @@ class AppTranslations {
   String get roleHub => languageCode == 'so' ? 'Xarunta' : 'Hub Staff';
   String get rolePartner => languageCode == 'so' ? 'Shuraakada' : 'Partner';
   String get roleExpert => languageCode == 'so' ? 'Khabiir' : 'Expert';
+  String get featuredProducts => languageCode == 'so' ? 'Dalagga La Xushay' : 'Featured Products';
+  String get viewAllProducts => languageCode == 'so' ? 'Arag Dhammaan Alaabta' : 'View All Products';
   String get roleChoose => languageCode == 'so' ? 'Dooro Doorka' : 'Choose a Role';
 
   // Drawer labels & Common Titles

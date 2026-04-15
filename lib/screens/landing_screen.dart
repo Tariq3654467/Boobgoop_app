@@ -10,11 +10,102 @@ import 'how_it_works_screen.dart';
 import 'login_screen.dart';
 import 'profile_screen.dart';
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
 
   @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (_pageController.hasClients) {
+        final nextPage = (_currentPage + 1) % _featuredProducts.length;
+        _pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  static const List<Map<String, dynamic>> _featuredProducts = [
+    {
+      'name': 'Organic Watermelon',
+      'image_url': 'assets/images/watermelon.png',
+      'price': '1.20',
+      'unit': 'kg',
+    },
+    {
+      'name': 'Grade A Bananas',
+      'image_url': 'assets/images/Fresh_banana_gradeA.png',
+      'price': '0.75',
+      'unit': 'kg',
+    },
+    {
+      'name': 'Iceberg Lettuce',
+      'image_url': 'assets/images/lattuce_bagal.png',
+      'price': '0.95',
+      'unit': 'unit',
+    },
+    {
+      'name': 'Sweet Mangoes',
+      'image_url': 'assets/images/mangoes.png',
+      'price': '1.70',
+      'unit': 'kg',
+    },
+    {
+      'name': 'Premium Tomatoes',
+      'image_url': 'assets/images/tomatoes.png',
+      'price': '1.05',
+      'unit': 'kg',
+    },
+    {
+      'name': 'Fresh Spinach',
+      'image_url': 'assets/images/spinch.png',
+      'price': '1.10',
+      'unit': 'bunch',
+    },
+    {
+      'name': 'Yellow Maize',
+      'image_url': 'assets/images/yellow_maize.png',
+      'price': '0.65',
+      'unit': 'kg',
+    },
+    {
+      'name': 'Premium Sesame Seeds',
+      'image_url': 'assets/images/premium_sesum_seeds.png',
+      'price': '3.20',
+      'unit': 'kg',
+    },
+  ];
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final appState = context.watch<AppState>();
+    final isLoggedIn = appState.isLoggedIn;
+    final appTranslations = AppLocalizations.of(context).translations;
     final appState = context.watch<AppState>();
     final isLoggedIn = appState.isLoggedIn;
     final appTranslations = AppLocalizations.of(context).translations;
@@ -65,7 +156,99 @@ class LandingScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: AppColors.textMedium),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
+                  // Featured Products Slider
+                  SizedBox(
+                    height: 200,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView.builder(
+                            controller: _pageController,
+                            onPageChanged: _onPageChanged,
+                            itemCount: _featuredProducts.length,
+                            itemBuilder: (context, index) {
+                              final product = _featuredProducts[index];
+                              return Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  Image.asset(
+                                    product['image_url'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Positioned(
+                                    bottom: 20,
+                                    left: 20,
+                                    right: 20,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.7),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            product['name'],
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            '\$${product['price']}/${product['unit']}',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            _featuredProducts.length,
+                            (index) => Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _currentPage == index 
+                                  ? AppColors.primaryBlue 
+                                  : AppColors.primaryBlue.withOpacity(0.3),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: TextButton(
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ShopProduceScreen(),
+                              ),
+                            ),
+                            child: Text(appTranslations.viewAllProducts),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   Row(
                     children: [
                       Expanded(
