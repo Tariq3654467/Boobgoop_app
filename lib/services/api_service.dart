@@ -237,4 +237,216 @@ class ApiService {
       throw Exception('Failed to update delivery status: $e');
     }
   }
+
+  // ============ ORDER MANAGEMENT METHODS ============
+
+  /// Creates a new order (buyer places order)
+  Future<Map<String, dynamic>> createOrder({
+    required String productId,
+    required double quantity,
+    required double totalPrice,
+    String? notes,
+  }) async {
+    try {
+      final buyerId = _supabase.auth.currentUser?.id;
+      if (buyerId == null) throw Exception('User not authenticated');
+
+      // First get the product to find the seller
+      final product = await _supabase
+          .from('products')
+          .select('seller_id, name, price_per_unit')
+          .eq('id', productId)
+          .single();
+
+      final sellerId = product['seller_id'];
+      if (sellerId == null) throw Exception('Product seller not found');
+
+      // Create the order
+      final orderData = {
+        'buyer_id': buyerId,
+        'seller_id': sellerId,
+        'status': 'pending',
+        'total_amount': totalPrice,
+        'notes': notes,
+        'created_at': DateTime.now().toIso8601String(),
+      };
+
+      final order = await _supabase
+          .from('orders')
+          .insert(orderData)
+          .select()
+          .single();
+
+      // Create order item
+      await _supabase.from('order_items').insert({
+        'order_id': order['id'],
+        'product_id': productId,
+        'quantity': quantity,
+        'unit_price': product['price_per_unit'],
+        'subtotal': quantity * product['price_per_unit'],
+      });
+
+      return order;
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
+    }
+  }
+
+  /// Gets all orders for the current buyer
+  Future<List<dynamic>> getBuyerOrders() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
+      final response = await _supabase
+          .from('orders')
+          .select('*, profiles!inner(first_name, last_name), order_items(*, products(name, price_per_unit))')
+          .eq('buyer_id', userId)
+          .order('created_at', ascending: false);
+
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching buyer orders: $e');
+      return [];
+    }
+  }
+
+  /// Gets all orders for the current seller
+  Future<List<dynamic>> getSellerOrders() async {
+    try {
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) return [];
+
+      final response = await _supabase
+          .from('orders')
+          .select('*, profiles!buyer_id(first_name, last_name, phone), order_items(*, products(name, price_per_unit))')
+          .eq('seller_id', userId)
+          .order('created_at', ascending: false);
+
+      return response as List<dynamic>;
+    } catch (e) {
+      print('Error fetching seller orders: $e');
+      return [];
+    }
+  }
+
+  /// Gets detailed information about a specific order
+  Future<Map<String, dynamic>> getOrderDetails(String orderId) async {
+    try {
+      final response = await _supabase
+          .from('orders')
+          .select('*, profiles!buyer_id(first_name, last_name, phone, region), order_items(*, products(*))')
+          .eq('id', orderId)
+          .single();
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to fetch order details: $e');
+    }
+  }
+
+  /// Seller accepts an order
+  Future<Map<String, dynamic>> acceptOrder(String orderId) async {
+    try {
+      final response = await _supabase
+          .from('orders')
+          .update({
+            'status': 'accepted',
+            'accepted_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', orderId)
+          .select()
+          .single();
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to accept order: $e');
+    }
+  }
+
+  /// Seller rejects an order
+  Future<Map<String, dynamic>> rejectOrder(String orderId, String reason) async {
+    try {
+      final response = await _supabase
+          .from('orders')
+          .update({
+            'status': 'rejected',
+            'rejection_reason': reason,
+            'rejected_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', orderId)
+          .select()
+          .single();
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to reject order: $e');
+    }
+  }
+
+  /// Updates order status (can be called by seller or system)
+  Future<Map<String, dynamic>> updateOrderStatus(String orderId, String status) async {
+    try {
+      final updateData = {'status': status};
+
+      // Add timestamp based on status
+      switch (status) {
+        case 'processing':
+          updateData['processing_at'] = DateTime.now().toIso8601String();
+          break;
+        case 'shipped':
+          updateData['shipped_at'] = DateTime.now().toIso8601String();
+          break;
+        case 'delivered':
+          updateData['delivered_at'] = DateTime.now().toIso8601String();
+          break;
+        case 'completed':
+          updateData['completed_at'] = DateTime.now().toIso8601String();
+          break;
+      }
+
+      final response = await _supabase
+          .from('orders')
+          .update(updateData)
+          .eq('id', orderId)
+          .select()
+          .single();
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to update order status: $e');
+    }
+  }
+
+  /// Buyer cancels an order
+  Future<Map<String, dynamic>> cancelOrder(String orderId, String reason) async {
+    try {
+      // Can only cancel pending or accepted orders
+      final order = await _supabase
+          .from('orders')
+          .select('status')
+          .eq('id', orderId)
+          .single();
+
+      final status = order['status'];
+      if (status != 'pending' && status != 'accepted') {
+        throw Exception('Cannot cancel order with status: $status');
+      }
+
+      final response = await _supabase
+          .from('orders')
+          .update({
+            'status': 'cancelled',
+            'cancellation_reason': reason,
+            'cancelled_at': DateTime.now().toIso8601String(),
+          })
+          .eq('id', orderId)
+          .select()
+          .single();
+
+      return response;
+    } catch (e) {
+      throw Exception('Failed to cancel order: $e');
+    }
+  }
 }

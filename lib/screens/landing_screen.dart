@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
@@ -103,12 +104,9 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appState = context.watch<AppState>();
-    final isLoggedIn = appState.isLoggedIn;
     final appTranslations = AppLocalizations.of(context).translations;
     final appState = context.watch<AppState>();
     final isLoggedIn = appState.isLoggedIn;
-    final appTranslations = AppLocalizations.of(context).translations;
 
     return Scaffold(
       appBar: AppBar(

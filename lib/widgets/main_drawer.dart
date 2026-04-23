@@ -27,6 +27,8 @@ import '../screens/ops_dashboard_screen.dart';
 import '../screens/finance_dashboard_screen.dart';
 import '../screens/profile_screen.dart';
 import '../screens/orders_screen.dart';
+import '../screens/buyer_orders_screen.dart';
+import '../screens/seller_orders_screen.dart';
 import '../screens/weather_screen.dart';
 import '../screens/deliveries_screen.dart';
 import '../screens/my_listings_screen.dart';
@@ -269,7 +271,7 @@ class MainDrawer extends StatelessWidget {
             () {
               Navigator.of(
                 context,
-              ).push(MaterialPageRoute(builder: (_) => const OrdersScreen()));
+              ).push(MaterialPageRoute(builder: (_) => const BuyerOrdersScreen()));
             },
           ),
           _DrawerMenuItem(Icons.cloud, translations.weatherTitle, () {
@@ -328,7 +330,7 @@ class MainDrawer extends StatelessWidget {
             () {
               Navigator.of(
                 context,
-              ).push(MaterialPageRoute(builder: (_) => const OrdersScreen()));
+              ).push(MaterialPageRoute(builder: (_) => const SellerOrdersScreen()));
             },
           ),
           _DrawerMenuItem(

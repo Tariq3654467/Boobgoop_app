@@ -1,13 +1,174 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_colors.dart';
+import '../models/app_state.dart';
+import '../services/api_service.dart';
+import '../l10n/app_localizations.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   final Map<String, dynamic> product;
 
   const ProductDetailScreen({super.key, required this.product});
 
   @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  bool _isOrderLoading = false;
+  String? _orderError;
+
+  Future<void> _showOrderDialog() async {
+    final quantityController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Place Order'),
+          content: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: quantityController,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  decoration: InputDecoration(
+                    labelText: 'Quantity (${widget.product['unit'] ?? 'kg'})',
+                    hintText: 'e.g., 10',
+                    border: const OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter quantity';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Please enter a valid number';
+                    }
+                    final qty = double.parse(value);
+                    final minOrder = double.tryParse(
+                      widget.product['min_order']?.toString() ?? '1',
+                    ) ?? 1;
+                    if (qty < minOrder) {
+                      return 'Minimum order: $minOrder';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Estimated total: SOS ${_calculateTotal(quantityController.text)}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.secondaryGreen,
+              ),
+              onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
+
+                final quantity = double.parse(quantityController.text.trim());
+                final price = double.tryParse(widget.product['price']?.toString() ?? '0') ?? 0;
+                final totalPrice = quantity * price;
+
+                Navigator.of(dialogContext).pop();
+
+                await _placeOrder(
+                  quantity: quantity,
+                  totalPrice: totalPrice,
+                );
+              },
+              child: const Text('Place Order'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  String _calculateTotal(String quantity) {
+    if (quantity.isEmpty) return '0.00';
+    final qty = double.tryParse(quantity) ?? 0;
+    final price = double.tryParse(widget.product['price']?.toString() ?? '0') ?? 0;
+    return (qty * price).toStringAsFixed(2);
+  }
+
+  Future<void> _placeOrder({
+    required double quantity,
+    required double totalPrice,
+  }) async {
+    setState(() {
+      _isOrderLoading = true;
+      _orderError = null;
+    });
+
+    try {
+      final appState = context.read<AppState>();
+      final token = appState.authToken;
+
+      if (token == null || token.isEmpty) {
+        setState(() {
+          _orderError = 'Please login to place an order';
+          _isOrderLoading = false;
+        });
+        return;
+      }
+
+      final api = ApiService(authToken: token);
+      final order = await api.createOrder(
+        productId: widget.product['id'],
+        quantity: quantity,
+        totalPrice: totalPrice,
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Order placed successfully!'),
+          backgroundColor: AppColors.secondaryGreen,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+
+      setState(() => _isOrderLoading = false);
+
+      // Navigate to orders screen or order detail
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _orderError = e.toString();
+        _isOrderLoading = false;
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $_orderError'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final product = widget.product;
     final seller = product['profiles'] ?? {};
     final imageUrl = product['image_url'] as String?;
     final unit = product['unit'] as String? ?? 'kg';
@@ -153,17 +314,22 @@ class ProductDetailScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 12),
                       ElevatedButton.icon(
-                        icon: const Icon(Icons.shopping_cart_outlined),
+                        icon: _isOrderLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.shopping_cart_outlined),
                         label: const Text('Order'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondaryGreen,
                           minimumSize: const Size(120, 52),
                         ),
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Order request submitted.')),
-                          );
-                        },
+                        onPressed: _isOrderLoading ? null : _showOrderDialog,
                       ),
                     ],
                   ),
