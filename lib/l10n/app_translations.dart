@@ -157,7 +157,7 @@ class AppTranslations {
   String get callCenter => languageCode == 'so' ? 'Xarunta Wicitaanka' : 'Call Center';
   String get location => languageCode == 'so' ? 'Goobta' : 'Location';
   String get socialMedia => languageCode == 'so' ? 'Baraha Bulshada' : 'Social Media';
-  String get followUs => languageCode == 'so' ? 'Nala soco oo la soco wixii ku cusub: @baadigoobonline' : 'Follow us and stay updated: @baadigoobonline';
+  String get followUs => languageCode == 'so' ? 'Nala soco oo la soco wixii ku cusub: @baadigoobagrolink' : 'Follow us and stay updated: @baadigoobagrolink';
   String get readyToPartner => languageCode == 'so' ? 'Ma diyaar u tahay inaad nala shaqeyso?' : 'Ready to partner with us?';
   String get letConnectFarmers => languageCode == 'so'
       ? 'Aynu isku xidhno beeralayda iyo suuqyada—si daah-furan oo waara'

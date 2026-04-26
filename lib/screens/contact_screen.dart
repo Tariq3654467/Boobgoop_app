@@ -63,7 +63,7 @@ class ContactScreen extends StatelessWidget {
             SectionHeader(title: translations.socialMedia),
             Text(translations.followUs),
             Text(
-              '@baadigoobonline',
+              '@baadigoobagrolink',
               style: TextStyle(
                 color: AppColors.primaryBlue,
                 fontWeight: FontWeight.bold,
@@ -74,12 +74,12 @@ class ContactScreen extends StatelessWidget {
               spacing: 16,
               runSpacing: 16,
               children: [
-                _socialMediaIcon(Icons.facebook, 'Facebook', 'https://facebook.com/baadigoobonline'),
-                _socialMediaIcon(Icons.camera_alt, 'Instagram', 'https://instagram.com/baadigoobonline'),
-                _socialMediaIcon(Icons.chat, 'Twitter', 'https://twitter.com/baadigoobonline'),
-                _socialMediaIcon(Icons.business, 'LinkedIn', 'https://linkedin.com/company/baadigoob'),
-                _socialMediaIcon(Icons.play_circle_fill, 'YouTube', 'https://youtube.com/baadigoobonline'),
-                _socialMediaIcon(Icons.music_note, 'TikTok', 'https://tiktok.com/@baadigoobonline'),
+                _socialMediaIcon(Icons.facebook, 'Facebook', 'https://www.facebook.com/share/1B5bgAwgtZ/'),
+                _socialMediaIcon(Icons.camera_alt, 'Instagram', 'https://www.instagram.com/baadigoobagrolink'),
+                _socialMediaIcon(Icons.chat, 'Twitter', 'https://x.com/baadigoobonline'),
+                _socialMediaIcon(Icons.business, 'LinkedIn', 'https://www.linkedin.com/posts/baadigoobagrolink_yaanyada-iyo-faaiidooyinkeeda-yaanyadu-activity-7446889243743911936-XbvQ'),
+                _socialMediaIcon(Icons.play_circle_fill, 'YouTube', 'https://youtube.com/@baadigoobonline2990?si=0v5_zl0p-UP7rmww'),
+                _socialMediaIcon(Icons.music_note, 'TikTok', 'https://www.tiktok.com/@baadigoobagrolink'),
               ],
             ),
 

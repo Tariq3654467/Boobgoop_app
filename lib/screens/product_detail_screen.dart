@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../models/app_state.dart';
 import '../services/api_service.dart';
@@ -305,10 +306,32 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             backgroundColor: AppColors.primaryBlue,
                             minimumSize: const Size.fromHeight(52),
                           ),
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Chat request sent to seller.')),
-                            );
+                          onPressed: () async {
+                            final sellerPhone = seller['phone'] as String?;
+                            if (sellerPhone != null && sellerPhone.isNotEmpty) {
+                              final message = Uri.encodeComponent('Hi $sellerName, I am interested in your listing for ${product['name']} on BaadiGoob.');
+                              final url = Uri.parse('https://wa.me/$sellerPhone?text=$message');
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url, mode: LaunchMode.externalApplication);
+                              } else {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Could not launch WhatsApp.')),
+                                  );
+                                }
+                              }
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('$sellerName has not provided a phone number. Contacting support...')),
+                                );
+                              }
+                              final message = Uri.encodeComponent('Hi BaadiGoob Support, I need help contacting the seller for ${product['name']}.');
+                              final url = Uri.parse('https://wa.me/252614195304?text=$message');
+                              if (await canLaunchUrl(url)) {
+                                await launchUrl(url, mode: LaunchMode.externalApplication);
+                              }
+                            }
                           },
                         ),
                       ),
